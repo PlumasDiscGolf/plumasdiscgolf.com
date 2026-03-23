@@ -28,7 +28,10 @@
 			<li>Entry into all bag tag league events for the year</li>
 			<li>Discounted entry into club events for the year</li>
 		</ul>
-		<p class="font-semibold">The Youth Membership includes everything in the Standard Membership but is for those 17 years and under.</p>
+		<p class="font-semibold">The Youth Membership includes everything in the Standard Membership and is available to players who are 18 years old or younger.</p>
+		<ul class="ml-3">
+			<li> Eligibility follows the PDGA's age-based division guidelines — your age is determined by your year of birth, not your birthday. Any player who turns 18 or younger during the current calendar year qualifies.</li>
+		</ul>
 	</div>
 
 	<div class="w-full px-2 pt-8">
