@@ -32,7 +32,7 @@
 						<strong>Initial Distribution:</strong> Tags will be initially assigned based on placement in the Membership Drive event.
 					</li>
 					<li>
-						<strong>Weekly Distribution:</strong> At the start of each regular league event, all participants will turn in their tags. Tags will then be redistributed based on the results of that day's two 9-hole rounds. Lowest scores receive the lowest tag numbers.
+						<strong>Weekly Distribution:</strong> At the start of each regular league event, all participants will turn in their tags. Tags will then be redistributed based on the results of that day's round. Lowest scores receive the lowest tag numbers.
 					</li>
 					<li>
 						<strong>Tag Order:</strong> Tags will be numbered sequentially. The exact number of tags in circulation will depend on league participation. (e.g., #1 - #50)
@@ -71,7 +71,11 @@
 			<li>
 				<strong>League Play</strong>
 				<ol>
-					<li><strong>Format:</strong> Two 9-hole rounds of singles stroke play.</li>
+					<li><strong>Format:</strong>
+					<ol>
+					  <li><strong>Open League:</strong> One 18-hole round of singles stroke play.</li>
+						<li><strong>Ladies League:</strong> One 9-hole round of singles stroke play.</li>
+					</ol>
 					<li>
 						<strong>Scoring:</strong>
 						<ol>
@@ -100,7 +104,7 @@
 			<li>
 				<strong>Fees</strong>
 				<ol>
-					<li>The only required fee is the annual Plumas Disc Golf membership fee of $25. There are no additional league fees, except for replacement tags ($5).</li>
+					<li>The only required fee is the annual Plumas Disc Golf membership fee. The only other fee could be a Replacement Tag Fee, if necessary.</li>
 				</ol>
 			</li>
 			<li>
@@ -112,7 +116,7 @@
 			<li>
 				<strong>Rules Disputes</strong>
 				<ol>
-					<li>Rules disputes will be handled by the League Director, if present. If the League Director is not present, rules disputes will be handled by the highest-ranking Club Board Member present, in the following order: Board President, Board Vice President, Other Board Director.</li>
+					<li>Rules disputes will be handled by the League Director, if present. If the League Director is not present, rules disputes will be handled by the highest-ranking Club Officer present, in the following order: President, Vice President, Secretary, Treasurer, Officer.</li>
 				</ol>
 			</li>
 			<li>
