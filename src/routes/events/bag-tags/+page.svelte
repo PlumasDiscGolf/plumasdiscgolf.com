@@ -35,14 +35,14 @@
 		</div>
 	</div>
 	<div class="w-full">
-		<h2 class="mb-6 mt-6 lg:mt-0 text-center text-3xl font-bold">2025 League Schedule</h2>
+		<h2 class="mb-6 mt-6 lg:mt-0 text-center text-3xl font-bold">2026 League Schedule</h2>
 		<div class="prose lg:prose-xl mx-auto">
-			<p><strong>Season Start:</strong> Plumas Disc Golf Membership Drive, April 5th, 2025. For more info, click <a href="/events/9qsc06b3jum1810">here</a>.</p>
+			<p><strong>Season Start:</strong> Plumas Disc Golf Membership Drive, April 4th, 2026.</p>
 			<p>
 				<strong>Regular Season:</strong> Following the Membership Drive, leagues will follow the regular schedule.
 			</p>
 			<ul>
-				<li><strong>Ladies League:</strong> Mondays at 5:30 PM</li>
+				<li><strong>Ladies League:</strong> Tuesdays at 5:30 PM</li>
 				<li><strong>Open League:</strong> Wednesdays at 5:30 PM</li>
 			</ul>
 
@@ -50,8 +50,8 @@
 				<strong>Season End:</strong>
 			</p>
 			<ul>
-				<li><strong>Ladies League:</strong> September 15th, 2025</li>
-				<li><strong>Open League:</strong> September 17th, 2025</li>
+				<li><strong>Ladies League:</strong> September 29th, 2025</li>
+				<li><strong>Open League:</strong> September 16th, 2025</li>
 			</ul>
 			<p>
 				<strong>Location:</strong> Pioneer Disc Golf Course.
@@ -60,11 +60,9 @@
 				<strong>Course Closures (No League Play):</strong>
 			</p>
 			<ul>
-				<li>June 29th - July 11th (High Sierra Music Festival - Dates Subject to Change)</li>
-				<li>July 24th - July 28th (Plumas-Sierra County Fair - Dates Subject to Change)</li>
+				<li>July 23rd - July 26th (Plumas-Sierra County Fair - Dates Subject to Change)</li>
 				<li>Any other dates the course is closed to the public.</li>
 			</ul>
 		</div>
 	</div>
 </div>
-
