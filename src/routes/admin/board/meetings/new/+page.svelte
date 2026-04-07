@@ -47,10 +47,20 @@
     </div>
 
     {#if form?.error}
-        <div class="alert alert-error mb-4 shadow-md"> </div>
+        <div class="alert alert-error mb-4 shadow-md">
+            <Icon src={XCircle} class="h-5 w-5 shrink-0" />
+            <span>{form.error}</span>
+        </div>
     {/if}
     {#if form?.fieldErrors}
-        <div class="alert alert-warning mb-4 shadow-md"> </div>
+        <div class="alert alert-warning mb-4 shadow-md">
+            <Icon src={XCircle} class="h-5 w-5 shrink-0" />
+            <ul class="list-disc list-inside">
+                {#each Object.entries(form.fieldErrors) as [field, message]}
+                    <li>{message}</li>
+                {/each}
+            </ul>
+        </div>
     {/if}
 
     <form method="POST" action="?/createBoardMeeting" use:enhance={() => {
@@ -59,7 +69,7 @@
             await update({ reset: (result.type === 'success' && !form?.error && !form?.fieldErrors) });
             isSaving = false;
             if (result.type === 'success' && !form?.error && !form?.fieldErrors) {
-                meetingDateTime = moment().format('YYYY-MM-DDTHH:mm'); 
+                meetingDateTime = moment().format('YYYY-MM-DDTHH:mm');
                 // agendaLink = ''; minutesLink = ''; // If keeping links
                 agendaFile = null; selectedAgendaFileName = '';
                 minutesFile = null; selectedMinutesFileName = '';
@@ -82,7 +92,7 @@
                     <span class="label-text-alt text-xs mt-1">Selected: {selectedAgendaFileName}</span>
                 {/if}
             </div>
-            
+
             <div class="form-control">
                 <label class="label" for="minutesFileInput">
                     <span class="label-text">Minutes Document</span>
@@ -93,7 +103,7 @@
                     <span class="label-text-alt text-xs mt-1">Selected: {selectedMinutesFileName}</span>
                 {/if}
             </div>
-            
+
             <div class="card-actions justify-end mt-6">
                 <a href="/admin?tab=tab4" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
                 <button type="submit" class="btn btn-primary flex items-center gap-1.5" disabled={isSaving}>

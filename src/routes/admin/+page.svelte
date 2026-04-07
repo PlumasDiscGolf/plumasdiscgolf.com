@@ -1,6 +1,6 @@
 <script>
 	import { format, parseISO, isSameDay } from 'date-fns';
-	import { Icon, PencilSquare, Trash, PlusCircle, ArrowRightStartOnRectangle, CalendarDays, Map, Newspaper, UserGroup, Heart, CurrencyDollar, Users, CircleStack, ArrowDownTray, Ticket, ChevronUpDown, ChevronUp, ChevronDown } from 'svelte-hero-icons';
+	import { Icon, PencilSquare, Trash, PlusCircle, ArrowRightStartOnRectangle, CalendarDays, Map, Newspaper, UserGroup, Heart, CurrencyDollar, Users, CircleStack, ArrowDownTray, Ticket, ChevronUpDown, ChevronUp, ChevronDown, CheckCircle } from 'svelte-hero-icons';
 	import PocketBase from 'pocketbase';
 	import { page } from '$app/stores';
 	import { replaceState, invalidateAll } from '$app/navigation';
@@ -70,18 +70,18 @@
 	];
 
 	let activeSectionId = $state('events');
-	$effect(() => {
-		if (typeof window !== 'undefined') {
-			const hash = window.location.hash.substring(1);
-			const isValidSection = adminSections.some((s) => s.id === hash);
 
-			if (hash && isValidSection) {
-				if (activeSectionId !== hash) activeSectionId = hash;
-			} else if (adminSections.length > 0 && !activeSectionId) {
-				activeSectionId = adminSections[0].id;
-			}
-		}
+	$effect(() => {
+    if (typeof window !== 'undefined') {
+        const hash = window.location.hash.substring(1);
+        console.log('$effect running, hash:', hash, 'activeSectionId:', activeSectionId);
+        const isValidSection = adminSections.some((s) => s.id === hash);
+        if (hash && isValidSection) {
+            activeSectionId = hash;
+        }
+    }
 	});
+
 	function setActiveSection(sectionId) {
 		activeSectionId = sectionId;
 		if (typeof window !== 'undefined') {
@@ -93,6 +93,20 @@
 
 	let successAlertMessage = $state('');
 	let errorAlertMessage = $state('');
+
+	function enhanceDelete() {
+    return async ({ update }) => {
+        const currentSection = activeSectionId;
+        await update();
+        await invalidateAll();
+        activeSectionId = currentSection;
+        if (typeof window !== 'undefined') {
+            const newUrl = new URL(window.location.href);
+            newUrl.hash = currentSection;
+            replaceState(newUrl, {});
+        }
+    };
+	}
 
 	function clearAlerts() {
 		successAlertMessage = '';
@@ -222,7 +236,7 @@
 												<form
 													method="POST"
 													action="?/delete"
-													use:enhance
+													use:enhance={enhanceDelete}
 													onsubmit={(e) => {
 														if (!window.confirm(`Delete "${item.name}"?`)) e.preventDefault();
 													}}
@@ -265,7 +279,7 @@
 												<form
 													method="POST"
 													action="?/delete"
-													use:enhance
+													use:enhance={enhanceDelete}
 													onsubmit={(e) => {
 														if (!window.confirm(`Delete "${item.name}"?`)) e.preventDefault();
 													}}
@@ -310,7 +324,7 @@
 												<form
 													method="POST"
 													action="?/delete"
-													use:enhance
+													use:enhance={enhanceDelete}
 													onsubmit={(e) => {
 														if (!window.confirm(`Delete "${item.title}"?`)) e.preventDefault();
 													}}
@@ -352,7 +366,7 @@
 												<form
 													method="POST"
 													action="?/delete"
-													use:enhance
+													use:enhance={enhanceDelete}
 													onsubmit={(e) => {
 														if (!window.confirm(`Delete "${item.name}"?`)) e.preventDefault();
 													}}
@@ -398,7 +412,7 @@
 												<form
 													method="POST"
 													action="?/delete"
-													use:enhance
+													use:enhance={enhanceDelete}
 													onsubmit={(e) => {
 														if (!window.confirm(`Delete meeting from ${item.meetingDateTime ? format(parseISO(item.meetingDateTime), 'MMM do, yyyy') : 'this date'}?`)) e.preventDefault();
 													}}
@@ -443,7 +457,7 @@
 												<form
 													method="POST"
 													action="?/delete"
-													use:enhance
+													use:enhance={enhanceDelete}
 													onsubmit={(e) => {
 														if (!window.confirm(`Delete membership for "${item.name}"?`)) e.preventDefault();
 													}}
@@ -488,7 +502,7 @@
 												<form
 													method="POST"
 													action="?/delete"
-													use:enhance
+													use:enhance={enhanceDelete}
 													onsubmit={(e) => {
 														if (!window.confirm(`Delete record for "${item.name}"?`)) e.preventDefault();
 													}}
@@ -537,7 +551,7 @@
 												<form
 													method="POST"
 													action="?/delete"
-													use:enhance
+													use:enhance={enhanceDelete}
 													onsubmit={(e) => {
 														if (!window.confirm(`Delete donation from "${item.donorName}"?`)) e.preventDefault();
 													}}

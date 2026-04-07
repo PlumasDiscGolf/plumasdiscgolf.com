@@ -53,7 +53,7 @@ export const actions = {
 		}
 
 		try {
-			await locals.pb.collection('boardMeetings').create(dataToSave);
+			await locals.pb.collection('board_meetings').create(dataToSave);
 		} catch (err) {
 			console.error('Error creating board meeting:', err.response || err.originalError || err);
 			let errorMessage = 'Failed to create board meeting.';
@@ -65,6 +65,6 @@ export const actions = {
 			return fail(500, { ...currentValues, error: errorMessage });
 		}
 
-		throw redirect(303, '/admin?tab=tab4&created=boardMeeting');
+		throw redirect(303, '/admin#boardMeetings');
 	}
 };

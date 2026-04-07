@@ -48,7 +48,7 @@ export const actions = {
 		// }
 
 		try {
-			await locals.pb.collection('boardMembers').create(dataToSave);
+			await locals.pb.collection('board_members').create(dataToSave);
 		} catch (err) {
 			console.error('Error creating board member:', err.response || err.originalError || err);
 			let errorMessage = 'Failed to create board member.';
@@ -60,6 +60,6 @@ export const actions = {
 			return fail(500, { ...currentValues, error: errorMessage });
 		}
 
-		throw redirect(303, '/admin?tab=tab4&created=boardMember');
+		throw redirect(303, '/admin#boardMembers');
 	}
 };
