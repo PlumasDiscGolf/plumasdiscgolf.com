@@ -1,3 +1,4 @@
+<!-- src/routes/admin/board/members/new/+page.svelte -->
 <script>
 	import { enhance } from '$app/forms';
 	import { Icon, CheckCircle, XCircle, ArrowUturnLeft } from 'svelte-hero-icons';
@@ -13,17 +14,34 @@
 		{ value: 'Treasurer', text: 'Treasurer' }
 	];
 
-	let memberName = $state(form?.memberName || '');
-	// Default to 'Director'
-	let memberRole = $state(form?.memberRole || 'Director');
-	let memberActive = $state(form?.memberActive === undefined ? true : form.memberActive);
+	let memberName = $state('');
+	let memberRole = $state('Director');
+	let memberBio = $state('');
+	let memberActive = $state(true);
+	let memberImageFile = $state(null);
+	let selectedImageFileName = $state('');
 
-	// let memberAvatarFile = $state(null);
-	// let avatarPreviewUrl = $state('');
+	$effect(() => {
+    if (form) {
+        memberName = form.memberName || '';
+        memberRole = form.memberRole || 'Director';
+        memberBio = form.memberBio || '';
+        memberActive = form.memberActive === undefined ? true : form.memberActive;
+    }
+	});
 
 	let isSaving = $state(false);
 
-	// function handleFileSelect(e) { ... } // If using avatars
+	function handleImageSelect(e) {
+    const file = e.target.files?.[0];
+    if (file) {
+        memberImageFile = file;
+        selectedImageFileName = file.name;
+    } else {
+        memberImageFile = null;
+        selectedImageFileName = '';
+    }
+}
 </script>
 
 <div class="container mx-auto max-w-xl px-4 py-8">
@@ -61,7 +79,10 @@
 				if (result.type === 'success' && !form?.error && !form?.fieldErrors) {
 					memberName = '';
 					memberRole = 'Director'; // Reset to default
+					memberBio = '';
 					memberActive = true;
+					memberImageFile = null;
+					selectedImageFileName = '';
 				}
 			};
 		}}
@@ -83,6 +104,39 @@
 				</select>
 				<span class="label-text-alt mt-1 text-xs">Select "--- No Role ---" if applicable.</span>
 			</div>
+
+      <div class="form-control">
+        <label class="label" for="memberBioInput">
+          <span class="label-text">Bio</span>
+          <span class="label-text-alt">(Optional)</span>
+        </label>
+        <textarea
+          name="bio"
+          id="memberBioInput"
+          placeholder="A short bio for this board member..."
+          class="textarea textarea-bordered w-full"
+          rows="4"
+          bind:value={memberBio}
+        ></textarea>
+      </div>
+
+      <div class="form-control">
+        <label class="label" for="memberImageInput">
+          <span class="label-text">Profile Image</span>
+          <span class="label-text-alt">(Optional)</span>
+        </label>
+        <input
+          name="image"
+          type="file"
+          id="memberImageInput"
+          class="file-input file-input-bordered file-input-sm w-full"
+          onchange={handleImageSelect}
+          accept="image/*"
+        />
+        {#if selectedImageFileName}
+          <span class="label-text-alt mt-1 text-xs">Selected: {selectedImageFileName}</span>
+          {/if}
+      </div>
 
 			<div class="form-control items-start">
 				<label class="label cursor-pointer gap-4 py-1">

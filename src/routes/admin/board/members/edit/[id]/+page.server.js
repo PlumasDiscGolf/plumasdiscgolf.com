@@ -25,9 +25,10 @@ export const actions = {
 		const formData = await request.formData();
 		const name = formData.get('name')?.toString();
 		const role = formData.get('role')?.toString();
+		const bio = formData.get('bio')?.toString() || '';
 		const active = formData.get('active') === 'on'; // Checkbox sends 'on' if checked
-		// const avatarFile = formData.get('avatar');
-		// const deleteExistingAvatar = formData.get('deleteExistingAvatar') === 'true';
+		const image = formData.get('image');
+		const deleteExistingImage = formData.get('deleteExistingImage') === 'true';
 
 		const fieldErrors = {};
 		if (!name) fieldErrors.name = 'Name is required.';
@@ -35,6 +36,7 @@ export const actions = {
 		const currentValues = {
 			memberName: name,
 			memberRole: role,
+			memberBio: bio,
 			memberActive: active
 		};
 
@@ -45,14 +47,14 @@ export const actions = {
 		const dataToUpdate = new FormData(); // Use FormData if handling files
 		dataToUpdate.append('name', name);
 		dataToUpdate.append('role', role);
+		dataToUpdate.append('bio', bio);
 		dataToUpdate.append('active', active);
 
-		// if (avatarFile && avatarFile.size > 0) {
-		//     dataToUpdate.append('avatarFieldNameInPb', avatarFile);
-		// } else if (deleteExistingAvatar) {
-		//     dataToUpdate.append('avatarFieldNameInPb', null); // To delete
-		// }
-		// If no new avatar and not deleting, don't append avatar field.
+		if (image && image.size > 0) {
+			dataToUpdate.append('image', image);
+		} else if (deleteExistingImage) {
+			dataToUpdate.append('image', null);
+		}
 
 		try {
 			await locals.pb.collection('board_members').update(params.id, dataToUpdate);

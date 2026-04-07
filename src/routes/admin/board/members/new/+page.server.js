@@ -18,8 +18,9 @@ export const actions = {
 
 		const name = formData.get('name')?.toString();
 		const role = formData.get('role')?.toString();
+		const bio = formData.get('bio')?.toString() || '';
 		const active = formData.get('active') === 'on'; // Checkbox value is 'on' or null
-		// const avatarFile = formData.get('avatar'); // If using avatars
+		const image = formData.get('image');
 
 		// Server-side validation
 		const fieldErrors = {};
@@ -29,6 +30,7 @@ export const actions = {
 		const currentValues = {
 			memberName: name,
 			memberRole: role,
+			memberBio: bio,
 			memberActive: active
 		};
 
@@ -41,11 +43,12 @@ export const actions = {
 		if (currentValues.memberRole !== 'None') {
 			dataToSave.append('role', role);
 		}
+		dataToSave.append('bio', bio);
 		dataToSave.append('active', active);
 
-		// if (avatarFile && avatarFile.size > 0) {
-		//     dataToSave.append('avatarFieldNameInPb', avatarFile); // Replace 'avatarFieldNameInPb'
-		// }
+		if (image && image.size > 0) {
+			dataToSave.append('image', image);
+		}
 
 		try {
 			await locals.pb.collection('board_members').create(dataToSave);
