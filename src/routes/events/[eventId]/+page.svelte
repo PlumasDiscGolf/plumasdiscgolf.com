@@ -131,7 +131,7 @@
         <div>
             {#if event.eventImage}
                 <img
-                    src="https://pdg.pockethost.io/api/files/{event.collectionId}/{event.id}/{event.eventImage}?download=1}"
+                    src="https://pdg.pockethost.io/api/files/{event.collectionId}/{event.id}/{event.eventImage}?download=1"
                     alt="Event banner"
                     class="w-full"
                 />
@@ -166,7 +166,7 @@
         <div class="card bg-base-100 mb-8 shadow-lg shadow-gray-400">
             <div class="card-body text-base-content leading-1 prose max-w-none">
                 <h2 class="card-title text-2xl">Event Details</h2>
-                {@html event.description}
+                <div class="prose">{@html event.description}</div>
             </div>
         </div>
     </div>
