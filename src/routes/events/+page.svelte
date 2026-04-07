@@ -24,13 +24,13 @@
 
 <div class="container mx-auto px-4 py-8">
     {#each data.upcomingEvents as event}
-        <div class="card mb-8 border border-gray-400 bg-base-100 shadow-lg shadow-gray-400 lg:card-side">
-            <figure class="lg:w-1/3">
+      <div class="card mb-8 border border-gray-400 bg-base-100 shadow-lg shadow-gray-400 lg:card-side lg:h-96">
+            <figure class="lg:h-full lg:w-1/3">
                 {#if event.eventImage}
-                    <img src="https://pdg.pockethost.io/api/files/{event.collectionId}/{event.id}/{event.eventImage}?download=1}" alt="Event banner" class="h-full w-full object-cover" />
+                    <img src="https://pdg.pockethost.io/api/files/{event.collectionId}/{event.id}/{event.eventImage}?download=1" alt="Event banner" class="h-full w-full object-cover object-top" />
                 {/if}
             </figure>
-            <div class="card-body lg:w-2/3">
+            <div class="card-body flex flex-col lg:w-2/3">
                 <div class="flex flex-wrap gap-2">
                     {#if event.type}
                         <div class="badge badge-secondary uppercase">{event.type}</div>
@@ -53,7 +53,10 @@
                         <span>Check-In begins at {format(parseISO(event.checkInTime), 'h:mm a')}</span>
                     </div>
                 {/if}
-                <p>{@html event.description.substring(0, 450)} ...</p>
+                <div class="relative max-h-36 overflow-hidden">
+                    <div class="prose max-w-none">{@html event.description}</div>
+                    <div class="absolute bottom-0 left-0 h-10 w-full" style="background: linear-gradient(to top, oklch(var(--b1)) 0%, transparent 100%);"></div>
+                </div>
                 <div class="card-actions mt-4 items-center justify-between">
                     <a href="/events/{event.id}" class="btn btn-info">More Info</a>
                     {#if event.registratinURL}
@@ -78,13 +81,13 @@
 
 <div class="container mx-auto px-4 py-8">
     {#each data.pastEvents as event}
-        <div class="card mb-8 border border-gray-400 bg-base-100 shadow-lg shadow-gray-400 lg:card-side">
-            <figure class="lg:w-1/3">
+      <div class="card mb-8 border border-gray-400 bg-base-100 shadow-lg shadow-gray-400 lg:card-side lg:h-96">
+            <figure class="lg:h-full lg:w-1/3">
                 {#if event.eventImage}
-                    <img src="http://pdg.pockethost.io/api/files/{event.collectionId}/{event.id}/{event.eventImage}?download=1}" alt="Event banner" class="h-full w-full object-cover" />
+                    <img src="https://pdg.pockethost.io/api/files/{event.collectionId}/{event.id}/{event.eventImage}?download=1" alt="Event banner" class="h-full w-full object-cover object-top" />
                 {/if}
             </figure>
-            <div class="card-body lg:w-2/3">
+            <div class="card-body flex flex-col lg:w-2/3">
                 <div class="flex flex-wrap gap-2">
                     {#if event.type}
                         <div class="badge badge-secondary uppercase">{event.type}</div>
@@ -107,7 +110,10 @@
                         <span>Check-In begins at {format(parseISO(event.checkInTime), 'h:mm a')}</span>
                     </div>
                 {/if}
-                <p>{@html event.description.substring(0, 450)} ...</p>
+                <div class="relative max-h-36 overflow-hidden">
+                    <div class="prose max-w-none">{@html event.description}</div>
+                    <div class="absolute bottom-0 left-0 h-10 w-full" style="background: linear-gradient(to top, oklch(var(--b1)) 0%, transparent 100%);"></div>
+                </div>
                 <div class="card-actions mt-4 items-center justify-between">
                     <a href="/events/{event.id}" class="btn btn-info">More Info</a>
                     {#if event.resultsPosted === true}
