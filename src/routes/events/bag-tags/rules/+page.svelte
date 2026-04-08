@@ -71,7 +71,7 @@
 			<li>
 				<strong>League Play</strong>
 				<ol>
-					<li><strong>Format:</strong>
+					<li><strong>Format:</strong></li>
 					<ol>
 					  <li><strong>Open League:</strong> One 18-hole round of singles stroke play.</li>
 						<li><strong>Ladies League:</strong> One 9-hole round of singles stroke play.</li>

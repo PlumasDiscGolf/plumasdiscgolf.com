@@ -4,12 +4,12 @@
 
     let { form } = $props(); // For receiving errors/data from the server action
 
-    let courseName = $state(form?.courseName || '');
-    let courseNumberOfHoles = $state(form?.courseNumberOfHoles || 18);
-    let coursePar = $state(form?.coursePar || 54);
-    let courseLengthInFeet = $state(form?.courseLengthInFeet || 0);
-    let courseLocation = $state(form?.courseLocation || '');
-    let courseDescription = $state(form?.courseDescription || '');
+    let courseName = $derived(form?.courseName || '');
+    let courseNumberOfHoles = $derived(form?.courseNumberOfHoles || 18);
+    let coursePar = $derived(form?.coursePar || 54);
+    let courseLengthInFeet = $derived(form?.courseLengthInFeet || 0);
+    let courseLocation = $derived(form?.courseLocation || '');
+    let courseDescription = $derived(form?.courseDescription || '');
 
     let isSaving = $state(false);
 </script>
@@ -82,7 +82,7 @@
                 <label class="label" for="courseDescriptionTextarea"><span class="label-text">Description</span></label>
                 <textarea name="description" id="courseDescriptionTextarea" class="textarea textarea-bordered h-24 w-full" placeholder="Brief description of the course, access notes, etc." bind:value={courseDescription}></textarea>
             </div>
-            
+
             <div class="card-actions justify-end mt-6">
                 <a href="/admin?tab=tab2" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
                 <button type="submit" class="btn btn-primary flex items-center gap-1.5" disabled={isSaving}>

@@ -5,7 +5,7 @@
 
     let { form } = $props(); // For receiving errors from the server action
 
-    let loginEmail = $state(form?.email || ''); // Pre-fill email on error
+    let loginEmail = $derived(form?.email || ''); // Pre-fill email on error
     let loginPassword = $state('');
     let loginInProgress = $state(false);
 

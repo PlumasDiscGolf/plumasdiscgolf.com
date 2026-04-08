@@ -5,11 +5,11 @@
 
     let { data, form } = $props(); // data.volunteer from load, form from action
 
-    let name = $state(form?.name || data.volunteer?.name || '');
-    let task = $state(form?.task || data.volunteer?.task || '');
+    let name = $derived(form?.name || data.volunteer?.name || '');
+    let task = $derived(form?.task || data.volunteer?.task || '');
     // The field in the database is 'date', so we access data.volunteer.date
-    let volunteerDate = $state(form?.volunteerDate || formatPocketBaseDateToDateInput(data.volunteer?.date));
-    
+    let volunteerDate = $derived(form?.volunteerDate || formatPocketBaseDateToDateInput(data.volunteer?.date));
+
     let isSaving = $state(false);
 </script>
 
@@ -61,7 +61,7 @@
                 <textarea name="task" id="taskTextarea" class="textarea textarea-bordered h-24 w-full" bind:value={task}></textarea>
                  <span class="label-text-alt text-xs mt-1">Describe the event or task the volunteer helped with.</span>
             </div>
-            
+
             <div class="card-actions justify-end mt-6">
                 <a href="/admin#volunteers" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
                 <button type="submit" class="btn btn-primary flex items-center gap-1.5" disabled={isSaving}>

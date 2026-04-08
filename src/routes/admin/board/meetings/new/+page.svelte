@@ -5,7 +5,7 @@
 
     let { form } = $props();
 
-    let meetingDateTime = $state(form?.meetingDateTime || moment().format('YYYY-MM-DDTHH:mm'));
+    let meetingDateTime = $derived(form?.meetingDateTime || moment().format('YYYY-MM-DDTHH:mm'));
 
     let agendaFile = $state(null); // For <input type="file">
     let minutesFile = $state(null); // For <input type="file">

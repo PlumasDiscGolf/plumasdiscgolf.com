@@ -8,12 +8,12 @@
     const defaultExpires = format(endOfYear(new Date()), 'yyyy-MM-dd');
     const defaultMemberSince = format(new Date(), 'yyyy-MM-dd');
 
-    let name = $state(form?.name || '');
-    let email = $state(form?.email || '');
-    let memberSince = $state(form?.memberSince || defaultMemberSince );
-    let expires = $state(form?.expires || defaultExpires);
-    let active = $state(form?.active === undefined ? true : form.active);
-    
+    let name = $derived(form?.name || '');
+    let email = $derived(form?.email || '');
+    let memberSince = $derived(form?.memberSince || defaultMemberSince );
+    let expires = $derived(form?.expires || defaultExpires);
+    let active = $derived(form?.active === undefined ? true : form.active);
+
     let isSaving = $state(false);
 </script>
 
@@ -82,12 +82,12 @@
                 </div>
             </div>
             <div class="form-control items-start">
-                 <label class="label cursor-pointer gap-4 py-1"> 
+                 <label class="label cursor-pointer gap-4 py-1">
                     <span class="label-text">Membership Active</span>
                     <input name="active" type="checkbox" id="activeToggle" class="toggle toggle-primary" bind:checked={active} />
                 </label>
             </div>
-            
+
             <div class="card-actions justify-end mt-6">
                 <a href="/admin#memberships" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
                 <button type="submit" class="btn btn-primary flex items-center gap-1.5" disabled={isSaving}>

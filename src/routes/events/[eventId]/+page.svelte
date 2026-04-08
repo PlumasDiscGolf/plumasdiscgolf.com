@@ -4,7 +4,7 @@
     import * as config from '$lib/config';
     let { data } = $props();
 
-    let event = data.event;
+    let event = $derived(data.event);
 </script>
 
 <svelte:head>

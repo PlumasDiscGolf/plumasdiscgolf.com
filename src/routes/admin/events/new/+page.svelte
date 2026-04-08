@@ -4,13 +4,13 @@
     import { format } from 'date-fns'; // Use date-fns
 
     let { form } = $props();
-    let eventName = $state(form?.eventName || '');
-    let eventType = $state(form?.eventType || 'League');
+    let eventName = $derived(form?.eventName || '');
+    let eventType = $derived(form?.eventType || 'League');
     // Default to today's date and time using date-fns
-    let eventStartDateTime = $state(form?.eventStartDateTime || format(new Date(), "yyyy-MM-dd'T'HH:mm"));
-    let eventEndDateTime = $state(form?.eventEndDateTime || '');
-    let eventDescription = $state(form?.eventDescription || '');
-    let eventPublished = $state(form?.eventPublished === undefined ? true : form.eventPublished);
+    let eventStartDateTime = $derived(form?.eventStartDateTime || format(new Date(), "yyyy-MM-dd'T'HH:mm"));
+    let eventEndDateTime = $derived(form?.eventEndDateTime || '');
+    let eventDescription = $derived(form?.eventDescription || '');
+    let eventPublished = $derived(form?.eventPublished === undefined ? true : form.eventPublished);
     let eventImageFile = $state(null);
     let imagePreviewUrl = $state('');
 
@@ -96,7 +96,7 @@
                     <textarea name="description" id="eventDescriptionTextarea" class="textarea textarea-bordered h-24 w-full" placeholder="Event details..." bind:value={eventDescription}></textarea>
                 </div>
                 <div class="form-control items-start md:col-span-2">
-                     <label class="label cursor-pointer gap-4 py-1"> 
+                     <label class="label cursor-pointer gap-4 py-1">
                         <span class="label-text">Published</span>
                         <input name="published" type="checkbox" id="eventPublishedToggle" class="toggle toggle-primary" bind:checked={eventPublished} />
                     </label>
@@ -104,7 +104,7 @@
                 <div class="form-control md:col-span-2">
                     <label class="label" for="eventImageInput"><span class="label-text">Event Image</span><span class="label-text-alt">(Optional)</span></label>
                     {#if imagePreviewUrl}
-                        <div class="mb-2"><img src={imagePreviewUrl} alt="Image preview" class="max-h-32 w-auto rounded border object-contain"/></div>
+                        <div class="mb-2"><img src={imagePreviewUrl} alt="preview" class="max-h-32 w-auto rounded border object-contain"/></div>
                     {/if}
                     <input name="eventImage" type="file" id="eventImageInput" class="file-input file-input-bordered file-input-sm w-full" onchange={handleFileSelect} accept="image/*" />
                 </div>

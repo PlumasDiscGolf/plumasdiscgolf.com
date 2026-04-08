@@ -5,10 +5,10 @@
 
     let { form } = $props();
 
-    let name = $state(form?.name || '');
-    let task = $state(form?.task || '');
-    let volunteerDate = $state(form?.volunteerDate || format(new Date(), 'yyyy-MM-dd'));
-    
+    let name = $derived(form?.name || '');
+    let task = $derived(form?.task || '');
+    let volunteerDate = $derived(form?.volunteerDate || format(new Date(), 'yyyy-MM-dd'));
+
     let isSaving = $state(false);
 </script>
 
@@ -68,7 +68,7 @@
                 <textarea name="task" id="taskTextarea" class="textarea textarea-bordered h-24 w-full" placeholder="e.g., Course cleanup day, Trilogy Challenge setup" bind:value={task}></textarea>
                  <span class="label-text-alt text-xs mt-1">Describe the event or task the volunteer helped with.</span>
             </div>
-            
+
             <div class="card-actions justify-end mt-6">
                 <a href="/admin#volunteers" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
                 <button type="submit" class="btn btn-primary flex items-center gap-1.5" disabled={isSaving}>

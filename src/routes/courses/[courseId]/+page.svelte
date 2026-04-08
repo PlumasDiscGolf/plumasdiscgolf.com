@@ -2,7 +2,7 @@
 	import { Icon, Calendar, Map, InformationCircle, Sparkles, MapPin } from "svelte-hero-icons"
 	let { data } = $props();
 
-	let course = data.course;
+	let course = $derived(data.course);
 </script>
 
 <!-- Hero Section -->

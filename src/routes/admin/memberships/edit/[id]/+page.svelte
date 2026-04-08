@@ -1,16 +1,16 @@
-<script>
+derived<script>
     import { enhance } from '$app/forms';
     import { Icon, CheckCircle, XCircle, ArrowUturnLeft } from 'svelte-hero-icons';
     import { formatPocketBaseDateToDateInput } from '$lib/utils.js';
 
     let { data, form } = $props(); // data.membership from load, form from action
 
-    let name = $state(form?.name || data.membership?.name || '');
-    let email = $state(form?.email || data.membership?.email || '');
-    let memberSince = $state(form?.memberSince || formatPocketBaseDateToDateInput(data.membership?.memberSince));
-    let expires = $state(form?.expires || formatPocketBaseDateToDateInput(data.membership?.expires));
-    let active = $state(form?.active === undefined ? (data.membership?.active === undefined ? true : data.membership.active) : form.active);
-    
+    let name = $derived(form?.name || data.membership?.name || '');
+    let email = $derived(form?.email || data.membership?.email || '');
+    let memberSince = $derived(form?.memberSince || formatPocketBaseDateToDateInput(data.membership?.memberSince));
+    let expires = $derived(form?.expires || formatPocketBaseDateToDateInput(data.membership?.expires));
+    let active = $derived(form?.active === undefined ? (data.membership?.active === undefined ? true : data.membership.active) : form.active);
+
     let isSaving = $state(false);
 </script>
 
@@ -69,12 +69,12 @@
             </div>
 
             <div class="form-control items-start">
-                 <label class="label cursor-pointer gap-4 py-1"> 
+                 <label class="label cursor-pointer gap-4 py-1">
                     <span class="label-text">Membership Active</span>
                     <input name="active" type="checkbox" id="activeToggle" class="toggle toggle-primary" bind:checked={active} />
                 </label>
             </div>
-            
+
             <div class="card-actions justify-end mt-6">
                 <a href="/admin#memberships" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
                 <button type="submit" class="btn btn-primary flex items-center gap-1.5" disabled={isSaving}>

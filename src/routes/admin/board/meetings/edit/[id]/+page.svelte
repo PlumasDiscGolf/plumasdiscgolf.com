@@ -5,8 +5,8 @@
 
     let { data, form } = $props(); // data.meeting from load
 
-    let meetingDateTime = $state(form?.meetingDateTime || formatPocketBaseDateToLocalInput(data.meeting?.meetingDateTime));
-    
+    let meetingDateTime = $derived(form?.meetingDateTime || formatPocketBaseDateToLocalInput(data.meeting?.meetingDateTime));
+
     // State for new file uploads
     let agendaFile = $state(null);
     let minutesFile = $state(null);
@@ -20,8 +20,8 @@
     // To display names/links of currently saved files
     let existingAgendaUrl = $state('');
     let existingMinutesUrl = $state('');
-    let existingAgendaName = $state(data.meeting?.agendaFile || ''); // Assuming 'agendaFile' is field name
-    let existingMinutesName = $state(data.meeting?.minutesFile || '');// Assuming 'minutesFile' is field name
+    let existingAgendaName = $derived(data.meeting?.agendaFile || ''); // Assuming 'agendaFile' is field name
+    let existingMinutesName = $derived(data.meeting?.minutesFile || '');// Assuming 'minutesFile' is field name
 
 
     // This effect runs when `data.meeting` changes (e.g., on initial load)
@@ -34,7 +34,7 @@
             // To get full URL, you'd need pb_client.files.getUrl(data.meeting, data.meeting.agendaFile)
             existingAgendaName = data.meeting.agendaFile || '';
             existingMinutesName = data.meeting.minutesFile || '';
-            
+
             // Clear file selections from previous interactions
             agendaFile = null; selectedAgendaFileName = ''; deleteExistingAgenda = false;
             minutesFile = null; selectedMinutesFileName = ''; deleteExistingMinutes = false;
@@ -78,8 +78,8 @@
         </a>
     </div>
 
-    {#if form?.error} {/if}
-    {#if form?.fieldErrors} {/if}
+    <!-- {#if form?.error} {/if}
+    {#if form?.fieldErrors} {/if} -->
 
     <form method="POST" action="?/updateBoardMeeting" use:enhance={() => {
         isSaving = true;
@@ -112,7 +112,7 @@
                     <span class="label-text-alt text-xs mt-1">New: {selectedAgendaFileName} (will replace existing if saved)</span>
                 {/if}
             </div>
-            
+
             <div class="form-control">
                 <label class="label" for="editMinutesFileInput"><span class="label-text">Minutes Document</span></label>
                  {#if existingMinutesName && !minutesFile}
@@ -129,7 +129,7 @@
                     <span class="label-text-alt text-xs mt-1">New: {selectedMinutesFileName} (will replace existing if saved)</span>
                 {/if}
             </div>
-            
+
             <div class="card-actions justify-end mt-6">
                 <a href="/admin?tab=tab4" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
                 <button type="submit" class="btn btn-primary flex items-center gap-1.5" disabled={isSaving}>

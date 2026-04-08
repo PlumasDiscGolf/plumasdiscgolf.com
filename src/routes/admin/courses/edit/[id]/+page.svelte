@@ -4,12 +4,12 @@
 
     let { data, form } = $props(); // data.course from load, form from action
 
-    let courseName = $state(form?.courseName || data.course?.name || '');
-    let courseNumberOfHoles = $state(form?.courseNumberOfHoles === undefined ? (data.course?.numberOfHoles === undefined ? 18 : data.course.numberOfHoles) : form.courseNumberOfHoles);
-    let coursePar = $state(form?.coursePar === undefined ? (data.course?.par === undefined ? 54 : data.course.par) : form.coursePar);
-    let courseLengthInFeet = $state(form?.courseLengthInFeet === undefined ? (data.course?.lengthInFeet === undefined ? 0 : data.course.lengthInFeet) : form.courseLengthInFeet);
-    let courseLocation = $state(form?.courseLocation || data.course?.location || '');
-    let courseDescription = $state(form?.courseDescription || data.course?.description || '');
+    let courseName = $derived(form?.courseName || data.course?.name || '');
+    let courseNumberOfHoles = $derived(form?.courseNumberOfHoles === undefined ? (data.course?.numberOfHoles === undefined ? 18 : data.course.numberOfHoles) : form.courseNumberOfHoles);
+    let coursePar = $derived(form?.coursePar === undefined ? (data.course?.par === undefined ? 54 : data.course.par) : form.coursePar);
+    let courseLengthInFeet = $derived(form?.courseLengthInFeet === undefined ? (data.course?.lengthInFeet === undefined ? 0 : data.course.lengthInFeet) : form.courseLengthInFeet);
+    let courseLocation = $derived(form?.courseLocation || data.course?.location || '');
+    let courseDescription = $derived(form?.courseDescription || data.course?.description || '');
 
     let isSaving = $state(false);
 </script>
@@ -75,7 +75,7 @@
                 <label class="label" for="editCourseDescriptionTextarea"><span class="label-text">Description</span></label>
                 <textarea name="description" id="editCourseDescriptionTextarea" class="textarea textarea-bordered h-24 w-full" bind:value={courseDescription}></textarea>
             </div>
-            
+
             <div class="card-actions justify-end mt-6">
                 <a href="/admin?tab=tab2" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
                 <button type="submit" class="btn btn-primary flex items-center gap-1.5" disabled={isSaving}>

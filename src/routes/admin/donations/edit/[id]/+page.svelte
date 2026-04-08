@@ -7,12 +7,12 @@
 
     const donationTypes = ['Monetary', 'In-Kind', 'Sponsorship', 'Other'];
 
-    let donorName = $state(form?.donorName || data.donation?.donorName || '');
-    let donorEmail = $state(form?.donorEmail || data.donation?.donorEmail || '');
-    let amount = $state(form?.amount === undefined ? data.donation?.amount : form.amount);
-    let donationDate = $state(form?.donationDate || formatPocketBaseDateToDateInput(data.donation?.donationDate));
-    let donationType = $state(form?.donationType || data.donation?.donationType || 'Monetary');
-    let notes = $state(form?.notes || data.donation?.notes || '');
+    let donorName = $derived(form?.donorName || data.donation?.donorName || '');
+    let donorEmail = $derived(form?.donorEmail || data.donation?.donorEmail || '');
+    let amount = $derived(form?.amount === undefined ? data.donation?.amount : form.amount);
+    let donationDate = $derived(form?.donationDate || formatPocketBaseDateToDateInput(data.donation?.donationDate));
+    let donationType = $derived(form?.donationType || data.donation?.donationType || 'Monetary');
+    let notes = $derived(form?.notes || data.donation?.notes || '');
 
     let isSaving = $state(false);
 </script>
@@ -85,7 +85,7 @@
                 <label class="label" for="notesTextarea"><span class="label-text">Notes</span></label>
                 <textarea name="notes" id="notesTextarea" class="textarea textarea-bordered h-24 w-full" bind:value={notes}></textarea>
             </div>
-            
+
             <div class="card-actions justify-end mt-6">
                 <a href="/admin#donations" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
                 <button type="submit" class="btn btn-primary flex items-center gap-1.5" disabled={isSaving}>

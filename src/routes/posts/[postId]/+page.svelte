@@ -1,6 +1,6 @@
 <script>
 	let { data } = $props();
-	let post = data.post
+	let post = $derived(data.post);
 </script>
 
 <!-- Hero Section -->

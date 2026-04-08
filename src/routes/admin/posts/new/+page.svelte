@@ -4,12 +4,12 @@
     import { format } from 'date-fns'; // Use date-fns
 
     let { form } = $props();
-    let postTitle = $state(form?.postTitle || '');
+    let postTitle = $derived(form?.postTitle || '');
     // Default to today using date-fns
-    let postPublishedDate = $state(form?.postPublishedDate || format(new Date(), 'yyyy-MM-dd'));
-    let postCategories = $state(form?.postCategories || '');
-    let postContent = $state(form?.postContent || '');
-    let postPublished = $state(form?.postPublished === undefined ? true : form.postPublished);
+    let postPublishedDate = $derived(form?.postPublishedDate || format(new Date(), 'yyyy-MM-dd'));
+    let postCategories = $derived(form?.postCategories || '');
+    let postContent = $derived(form?.postContent || '');
+    let postPublished = $derived(form?.postPublished === undefined ? true : form.postPublished);
     let postImageFile = $state(null);
     let imagePreviewUrl = $state('');
     let isSaving = $state(false);
@@ -83,21 +83,21 @@
                 <label class="label" for="postContentTextarea"><span class="label-text">Content*</span></label>
                 <textarea name="content" id="postContentTextarea" class="textarea textarea-bordered h-48 w-full" placeholder="Write your post content here. Markdown might be supported depending on display." bind:value={postContent} required></textarea>
             </div>
-            
+
             <div class="form-control items-start">
-                 <label class="label cursor-pointer gap-4 py-1"> 
+                 <label class="label cursor-pointer gap-4 py-1">
                     <span class="label-text">Published</span>
                     <input name="published" type="checkbox" id="postPublishedToggle" class="toggle toggle-primary" bind:checked={postPublished} />
                 </label>
             </div>
-            
+
             <div class="form-control">
                 <label class="label" for="postImageInput">
                     <span class="label-text">Header Image</span>
                     <span class="label-text-alt">(Optional)</span>
                 </label>
                 {#if imagePreviewUrl}
-                    <div class="mb-2"><img src={imagePreviewUrl} alt="Image preview" class="max-h-40 w-auto rounded border object-contain"/></div>
+                    <div class="mb-2"><img src={imagePreviewUrl} alt="preview" class="max-h-40 w-auto rounded border object-contain"/></div>
                 {/if}
                 <input name="image" type="file" id="postImageInput" class="file-input file-input-bordered file-input-sm w-full" onchange={handleFileSelect} accept="image/*" />
             </div>

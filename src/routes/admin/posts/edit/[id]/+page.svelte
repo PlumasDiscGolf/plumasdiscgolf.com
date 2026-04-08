@@ -5,18 +5,18 @@
 
     let { data, form } = $props(); // data.post from load, form from action
 
-    let postTitle = $state(form?.postTitle || data.post?.title || '');
-    let postPublishedDate = $state(form?.postPublishedDate || formatPocketBaseDateToDateInput(data.post?.publishedDate));
-    let postCategories = $state(form?.postCategories || (Array.isArray(data.post?.categories) ? data.post.categories.join(', ') : (data.post?.categories || '')));
-    let postContent = $state(form?.postContent || data.post?.content || '');
-    let postPublished = $state(form?.postPublished === undefined ? (data.post?.published === undefined ? true : data.post.published) : form.postPublished);
-    
+    let postTitle = $derived(form?.postTitle || data.post?.title || '');
+    let postPublishedDate = $derived(form?.postPublishedDate || formatPocketBaseDateToDateInput(data.post?.publishedDate));
+    let postCategories = $derived(form?.postCategories || (Array.isArray(data.post?.categories) ? data.post.categories.join(', ') : (data.post?.categories || '')));
+    let postContent = $derived(form?.postContent || data.post?.content || '');
+    let postPublished = $derived(form?.postPublished === undefined ? (data.post?.published === undefined ? true : data.post.published) : form.postPublished);
+
     let postImageFile = $state(null);
-    let imagePreviewUrl = $state(
-        (data.post?.image && data.post?.id && data.post?.collectionId) ? 
+    let imagePreviewUrl = $derived(
+        (data.post?.image && data.post?.id && data.post?.collectionId) ?
         `https://pdg.pockethost.io/api/files/${data.post.collectionId}/${data.post.id}/${data.post.image}?thumb=200x200` : ''
     );
-    let existingFileName = $state(data.post?.image || '');
+    let existingFileName = $derived(data.post?.image || '');
 
     let isSaving = $state(false);
 
@@ -27,7 +27,7 @@
             imagePreviewUrl = URL.createObjectURL(file);
         } else {
             postImageFile = null;
-            imagePreviewUrl = (data.post?.image && data.post?.id && data.post?.collectionId) ? 
+            imagePreviewUrl = (data.post?.image && data.post?.id && data.post?.collectionId) ?
                 `https://pdg.pockethost.io/api/files/${data.post.collectionId}/${data.post.id}/${data.post.image}?thumb=200x200` : '';
         }
     }
@@ -78,28 +78,28 @@
                 <label class="label" for="editPostContentTextarea"><span class="label-text">Content*</span></label>
                 <textarea name="content" id="editPostContentTextarea" class="textarea textarea-bordered h-48 w-full" bind:value={postContent} required></textarea>
             </div>
-            
+
             <div class="form-control items-start">
-                 <label class="label cursor-pointer gap-4 py-1"> 
+                 <label class="label cursor-pointer gap-4 py-1">
                     <span class="label-text">Published</span>
                     <input type="hidden" name="published" value={postPublished ? 'on' : 'off'} />
                     <input type="checkbox" id="editPostPublishedToggle" class="toggle toggle-primary" bind:checked={postPublished} />
                 </label>
             </div>
-            
+
             <div class="form-control">
                 <label class="label" for="editPostImageInput">
                     <span class="label-text">Header Image</span>
                     <span class="label-text-alt">(Optional - new image will replace old)</span>
                 </label>
                 {#if imagePreviewUrl}
-                    <div class="mb-2"><img src={imagePreviewUrl} alt="Image preview" class="max-h-40 w-auto rounded border object-contain"/></div>
+                    <div class="mb-2"><img src={imagePreviewUrl} alt="preview" class="max-h-40 w-auto rounded border object-contain"/></div>
                 {:else if existingFileName}
                      <p class="text-xs mb-1">Current image: {existingFileName} (upload new to replace)</p>
                 {/if}
                 <input name="image" type="file" id="editPostImageInput" class="file-input file-input-bordered file-input-sm w-full" onchange={handleFileSelect} accept="image/*" />
                 <input type="hidden" name="deleteExistingImage" value="false" /> </div>
-            
+
             <div class="card-actions justify-end mt-6">
                 <a href="/admin?tab=tab3" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
                 <button type="submit" class="btn btn-primary flex items-center gap-1.5" disabled={isSaving}>

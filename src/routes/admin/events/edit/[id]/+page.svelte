@@ -7,9 +7,9 @@
     // form prop contains feedback from the server action
     let { data, form } = $props();
     // Initialize state with loaded event data or form data (if action failed)
-    let eventName = $state(form?.eventName || data.event?.name || '');
-    let eventType = $state(form?.eventType || data.event?.eventType || 'League');
-    
+    let eventName = $derived(form?.eventName || data.event?.name || '');
+    let eventType = $derived(form?.eventType || data.event?.eventType || 'League');
+
     // Helper to format for datetime-local input
     function formatForInput(isoString) {
         if (!isoString) return '';
@@ -18,14 +18,14 @@
         return format(date, "yyyy-MM-dd'T'HH:mm");
     }
 
-    let eventStartDateTime = $state(form?.eventStartDateTime || formatForInput(data.event?.startDateTime));
-    let eventEndDateTime = $state(form?.eventEndDateTime || formatForInput(data.event?.endDateTime));
-    let eventDescription = $state(form?.eventDescription || data.event?.description || '');
-    let eventPublished = $state(form?.eventPublished === undefined ? (data.event?.published === undefined ? true : data.event.published) : form.eventPublished);
+    let eventStartDateTime = $derived(form?.eventStartDateTime || formatForInput(data.event?.startDateTime));
+    let eventEndDateTime = $derived(form?.eventEndDateTime || formatForInput(data.event?.endDateTime));
+    let eventDescription = $derived(form?.eventDescription || data.event?.description || '');
+    let eventPublished = $derived(form?.eventPublished === undefined ? (data.event?.published === undefined ? true : data.event.published) : form.eventPublished);
     let eventImageFile = $state(null);
     // Construct initial image preview URL
-    let imagePreviewUrl = $state(
-        (data.event?.eventImage && data.event?.id && data.event?.collectionId) ? 
+    let imagePreviewUrl = $derived(
+        (data.event?.eventImage && data.event?.id && data.event?.collectionId) ?
         `https://pdg.pockethost.io/api/files/${data.event.collectionId}/${data.event.id}/${data.event.eventImage}?thumb=200x200` : ''
     );
 
@@ -44,8 +44,8 @@
     }
 
     // To display existing file name if no new one chosen for edit
-    let existingFileName = $state(data.event?.eventImage || '');
-    
+    let existingFileName = $derived(data.event?.eventImage || '');
+
 </script>
 
 <div class="container mx-auto px-4 py-8 max-w-3xl">
@@ -112,7 +112,7 @@
                     <textarea name="description" id="editEventDescriptionTextarea" class="textarea textarea-bordered h-24 w-full" bind:value={eventDescription}></textarea>
                 </div>
                 <div class="form-control items-start md:col-span-2">
-                     <label class="label cursor-pointer gap-4 py-1"> 
+                     <label class="label cursor-pointer gap-4 py-1">
                         <span class="label-text">Published</span>
                         <input type="hidden" name="published" value={eventPublished ? 'on' : 'off'} />
                         <input type="checkbox" id="editEventPublishedToggle" class="toggle toggle-primary" bind:checked={eventPublished} />
@@ -121,14 +121,14 @@
                 <div class="form-control md:col-span-2">
                     <label class="label" for="editEventImageInput"><span class="label-text">Event Image</span><span class="label-text-alt">(Optional - new image will replace old)</span></label>
                     {#if imagePreviewUrl}
-                        <div class="mb-2"><img src={imagePreviewUrl} alt="Image preview" class="max-h-32 w-auto rounded border object-contain"/></div>
+                        <div class="mb-2"><img src={imagePreviewUrl} alt="preview" class="max-h-32 w-auto rounded border object-contain"/></div>
                     {:else if existingFileName}
                         <p class="text-xs mb-1">Current image: {existingFileName} (upload new to replace)</p>
                     {/if}
                     <input name="eventImage" type="file" id="editEventImageInput" class="file-input file-input-bordered file-input-sm w-full" onchange={handleFileSelect} accept="image/*" />
-                    <label class="label">
+                    <p class="label">
                         <span class="label-text-alt">To remove image, upload nothing or use a 'remove image' feature (if implemented). Currently, not uploading a new image keeps the old one.</span>
-                    </label>
+                    </p>
                      <input type="hidden" name="deleteExistingImage" value="false" /> </div>
             </div>
             <div class="card-actions justify-end mt-6">
