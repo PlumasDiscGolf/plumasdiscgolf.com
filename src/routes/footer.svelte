@@ -1,5 +1,5 @@
 <script >
-	
+
 </script>
 
 <footer class="grid md:grid-cols-3 footer sticky top-[100vh] bg-neutral p-4 text-neutral-content">
@@ -7,7 +7,7 @@
 		<img src='/images/header_logo.png' alt="Plumas Disc Golf's Logo" class="max-h-16 hover:scale-105" />
 	</aside>
 	<div class="mt-8 mx-auto">
-		<p class="mx-auto">© {new Date().getFullYear()} Plumas Disc Golf - All right reserved</p>
+		<p class="mx-auto">© {new Date().getFullYear()} Plumas Disc Golf - All rights reserved</p>
 		<a href="/login" class="mx-auto"><span class="text-xs text-primary">Admin</span></a>
 	</div>
 	<nav class="grid-flow-col gap-4 pr-8 md:place-self-center md:justify-self-end">
