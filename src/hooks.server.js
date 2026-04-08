@@ -9,11 +9,11 @@ export async function handle({ event, resolve }) {
 	// console.log('[HOOKS] Raw cookie from request:', cookie); // Can be very verbose
 
 	event.locals.pb.authStore.loadFromCookie(cookie);
-	if (event.locals.pb.authStore.token) {
-		console.log('[HOOKS] Token loaded from cookie. isValid (initial):', event.locals.pb.authStore.isValid);
-	} else {
-		console.log('[HOOKS] No token found in cookie.');
-	}
+	// if (event.locals.pb.authStore.token) {
+	// 	console.log('[HOOKS] Token loaded from cookie. isValid (initial):', event.locals.pb.authStore.isValid);
+	// } else {
+	// 	console.log('[HOOKS] No token found in cookie.');
+	// }
 	// console.log('[HOOKS] Model after loadFromCookie:', event.locals.pb.authStore.model?.id || null);
 
 	try {
@@ -23,7 +23,7 @@ export async function handle({ event, resolve }) {
 			// console.log('[HOOKS] authRefresh successful. New isValid:', event.locals.pb.authStore.isValid, 'New Model:', event.locals.pb.authStore.model?.id || null);
 		} else if (event.locals.pb.authStore.token) {
 			// Token exists but is not valid (e.g., expired), so clear it
-			console.log('[HOOKS] Token exists but authStore is not valid. Clearing store.');
+			// console.log('[HOOKS] Token exists but authStore is not valid. Clearing store.');
 			event.locals.pb.authStore.clear();
 		} else {
 			// No token and not valid, do nothing
