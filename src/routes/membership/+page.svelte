@@ -20,7 +20,7 @@
 
 		<!-- Left column: description -->
 		<div class="lg:w-2/5">
-			<div class="card border border-gray-400 bg-base-100 shadow-lg shadow-gray-400">
+			<div class="card bg-base-100 shadow-lg shadow-gray-400">
 				<div class="card-body lg:prose lg:min-h-[800px]">
   				<div class="my-4 w-full text-pretty">
         		<p class="my-4 font-semibold text-secondary">Becoming a Club Member is one of the best ways to support Plumas Disc Golf. Memberships are one of our primary fundraising sources each year. Thank you for your support!</p>
@@ -41,7 +41,7 @@
 
 		<!-- Right column: membership embed -->
 		<div class="lg:w-3/5">
-			<div class="card overflow-hidden border border-gray-400 bg-base-100 shadow-lg shadow-gray-400">
+			<div class="card overflow-hidden bg-base-100 shadow-lg shadow-gray-400">
 				<div class="card-body p-0">
 					<iframe
 						title="Membership Powered by Zeffy"

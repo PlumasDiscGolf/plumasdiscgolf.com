@@ -21,7 +21,7 @@
 
 		<!-- Left column: description -->
 		<div class="lg:w-2/5">
-			<div class="card border border-gray-400 bg-base-100 shadow-lg shadow-gray-400">
+			<div class="card bg-base-100 shadow-lg shadow-gray-400">
 				<div class="card-body lg:prose lg:min-h-[600px]">
   				<div class="my-4 w-full text-pretty">
   					<p class="my-4 font-semibold">If you're interested in making a donation to Plumas Disc Golf, thank you — it means a lot to us. Your support goes directly toward maintaining our current courses, developing new ones across Plumas County, and funding the events and programs that make this community what it is.</p>
@@ -34,7 +34,7 @@
 
 		<!-- Right column: membership embed -->
 		<div class="lg:w-3/5">
-			<div class="card overflow-hidden border border-gray-400 bg-base-100 shadow-lg shadow-gray-400">
+			<div class="card overflow-hidden bg-base-100 shadow-lg shadow-gray-400">
 				<div class="card-body p-0">
 					<iframe
 						title="Donations Powered by Zeffy"
