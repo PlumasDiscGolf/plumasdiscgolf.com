@@ -15,33 +15,44 @@
 	</div>
 </div>
 
-<div class="my-4 w-full text-center">
-	<p class="mx-auto my-4 max-w-[72ch] font-semibold text-secondary">We are now processing online memberships through Zeffy, our non-profit financial partner. They do not take any fees from our transactions, allowing us to use your full payment to help achieve our goals.</p>
-</div>
+<div class="container mx-auto px-4 py-8">
+	<div class="flex flex-col gap-6 lg:flex-row">
 
-<div class="grid">
-	<div class="m-auto max-w-[72ch] px-4">
-		<p class="my-4 font-semibold">Becoming a Club Member is one of the best ways to support Plumas Disc Golf. Memberships are one of our primary fundraising sources each year. Thank you for your support!</p>
-		<p class="font-semibold">The Standard Membership includes:</p>
-		<ul class="ml-3">
-			<li>A Custom PDG Bag Tag</li>
-			<li>Entry into all bag tag league events for the year</li>
-			<li>Discounted entry into club events for the year</li>
-		</ul>
-		<p class="font-semibold">The Youth Membership includes everything in the Standard Membership and is available to players who are 18 years old or younger.</p>
-		<ul class="ml-3">
-			<li> Eligibility follows the PDGA's age-based division guidelines — your age is determined by your year of birth, not your birthday. Any player who turns 18 or younger during the current calendar year qualifies.</li>
-		</ul>
-	</div>
+		<!-- Left column: description -->
+		<div class="lg:w-2/5">
+			<div class="card border border-gray-400 bg-base-100 shadow-lg shadow-gray-400">
+				<div class="card-body lg:prose lg:min-h-[800px]">
+  				<div class="my-4 w-full text-pretty">
+        		<p class="my-4 font-semibold text-secondary">Becoming a Club Member is one of the best ways to support Plumas Disc Golf. Memberships are one of our primary fundraising sources each year. Thank you for your support!</p>
+        		<p class="font-bold">The Standard Membership includes:</p>
+        		<ul class="ml-3">
+         			<li>A Custom PDG Bag Tag</li>
+         			<li>Entry into all bag tag league events for the year</li>
+         			<li>Discounted entry into club events for the year</li>
+        		</ul>
+        		<p class="font-bold">The Youth Membership includes everything in the Standard Membership and is available to players who are 18 years old or younger.</p>
+        		<ul class="ml-3">
+         			<li> Eligibility follows the PDGA's age-based division guidelines — your age is determined by your year of birth, not your birthday. Any player who turns 18 or younger during the current calendar year qualifies.</li>
+        		</ul>
+         	</div>
+				</div>
+			</div>
+		</div>
 
-	<div class="w-full px-2 pt-8">
-		<iframe
-			title="Membership form powered by Zeffy"
-			src="https://www.zeffy.com/embed/ticketing/club-membership--2025"
-			style="width: 100%; height: 550px; border: none;"
-			allowpaymentrequest
-			allowTransparency="true"
-			scrolling="no"
-		></iframe>
+		<!-- Right column: membership embed -->
+		<div class="lg:w-3/5">
+			<div class="card overflow-hidden border border-gray-400 bg-base-100 shadow-lg shadow-gray-400">
+				<div class="card-body p-0">
+					<iframe
+						title="Membership Powered by Zeffy"
+						style="border: 0; width: 100%; height: 800px; display: block;"
+						src="https://www.zeffy.com/embed/ticketing/club-membership--2025"
+						allowpaymentrequest
+						allowtransparency="true"
+					></iframe>
+				</div>
+			</div>
+		</div>
+
 	</div>
 </div>
