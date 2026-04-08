@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-	<title>Events - {config.title}</title>
+	<title>Donate - {config.title}</title>
 	<!-- Zeffy Script -->
 	<script src="https://zeffy-scripts.s3.ca-central-1.amazonaws.com/embed-form-script.min.js"></script>
 </svelte:head>
