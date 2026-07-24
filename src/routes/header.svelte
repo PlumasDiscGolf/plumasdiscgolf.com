@@ -14,10 +14,15 @@
 			<ul tabindex="0" class="menu dropdown-content menu-sm rounded-box bg-neutral z-[1] mt-3 w-52 p-2 font-semibold text-white shadow">
 				<li><a href="/membership" aria-label="membership link">Membership</a></li>
 				<li class=""><a href="/events" aria-label="events link">Events</a></li>
-				<li class="pl-3"><a href="/events/bag-tags" aria-label="events link">Bag Tags League</a></li>
-				<li class="pl-3"><a href="/events/plumas-series" aria-label="events link">Plumas Series</a></li>
+				<li class="pl-3"><a href="/events/calendar" aria-label="calendar link">Calendar</a></li>
+				<li class="pl-3"><a href="/events/bag-tags" aria-label="bag tags link">Bag Tags League</a></li>
+				<li class="pl-3"><a href="/events/plumas-series" aria-label="plumas series link">Plumas Series</a></li>
 				<li><a href="/courses" aria-label="courses link">Courses</a></li>
-				<li><a href="/calendar" aria-label="calendar link">Calendar</a></li>
+				<li><a href="/rules" aria-label="club and events rules link">Rules</a></li>
+				<li class="pl-3"><a href="/rules/disc-golf">Rules of Disc Golf</a></li>
+				<li class="pl-3"><a href="/rules/disc-golf">Club Rules</a></li>
+				<li class="pl-3"><a href="/rules/disc-golf">Bag Tags Rules</a></li>
+				<li class="pl-3"><a href="/rules/disc-golf">Plumas Series Rules</a></li>
 				<li><a href="/board" aria-label="board link">Board</a></li>
 				<li><a href="/donate" aria-label="donate link">Donate</a></li>
 				<li><a href="/about" aria-label="about link">About</a></li>
@@ -37,6 +42,7 @@
 			<li>
 				<a href="/events" aria-label="events link">Events</a>
 				<ul class="clear bg-neutral mt-4 rounded-xl py-2">
+					<li><a href="/events/calendar">Calendar</a></li>
 					<li><a href="/events">Event Listing</a></li>
 					<li><a href="/events/bag-tags">Bag Tags Leagues</a></li>
 					<li><a href="/events/plumas-series">Plumas Series</a></li>
@@ -49,7 +55,15 @@
 					<li><a href="/courses/0hwk22l0al0sr9m">Cascades DGC</a></li>
 				</ul>
 			</li>
-			<li><a href="/calendar" aria-label="calendar link">Calendar</a></li>
+			<li>
+				<div aria-label="club and events rules menu">Rules</div>
+				<ul class="clear bg-neutral mt-4 rounded-xl py-2">
+					<li><a href="/rules/disc-golf">Rules of Disc Golf</a></li>
+					<li><a href="/rules/club">Club Rules</a></li>
+					<li><a href="/rules/bag-tags">Bag Tag League Rules</a></li>
+					<li><a href="/rules/plumas-series">Plumas Series Rules</a></li>
+				</ul>
+			</li>
 			<li><a href="/board" aria-label="board link">Board</a></li>
 			<li><a href="/donate" aria-label="donate link">Donate</a></li>
 			<li><a href="/about" aria-label="about link">About</a></li>
