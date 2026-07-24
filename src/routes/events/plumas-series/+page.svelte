@@ -52,23 +52,22 @@
 		</div>
 	</div>
 	<div>
-		<h2 class="mb-6 mt-6 lg:mt-0 text-center text-3xl font-bold md:mt-0">2025 Event Schedule</h2>
+		<h2 class="mb-6 mt-6 lg:mt-0 text-center text-3xl font-bold md:mt-0">2026 Event Schedule</h2>
 		<div class="prose mx-auto mb-6 lg:prose-xl">
 			<ul>
 				<li><strong>All events start at 10:00 AM, with check-ins starting at 9:00 AM</strong></li>
 				<li>
 					<strong>Handicap Point Series Events:</strong>
 					<ul>
-						<li>March 22nd</li>
-						<li>April 19th</li>
-						<li>May 17th</li>
-						<li>June 21st</li>
-						<li>July 19th</li>
-						<li>August 16th</li>
-						<li>September 20th</li>
+						<li>April 18th</li>
+						<li>May 16th</li>
+						<li>June 20th</li>
+						<li>July 18th</li>
+						<li>August 15th</li>
+						<li>September 19th</li>
 					</ul>
 				</li>
-				<li><strong>Survivor Razz Round Chanmpionship:</strong> October 18th</li>
+				<li><strong>Survivor Razz Round Championship:</strong> October 17th</li>
 			</ul>
 		</div>
 		<h2 class="my-6 text-center text-3xl font-bold md:mt-0">Series Format</h2>
