@@ -17,14 +17,14 @@
 </div>
 <div class="w-full">
 	<div class="prose mx-auto mt-6 max-w-[72ch] lg:prose-xl px-4">
-		<p>Get ready to test your skills and battle for disc golf supremacy in the 2025 Plumas Series! This exciting 8-event series, held at the beautiful Pioneer Disc Golf Course, is designed for amateur players of all skill levels right here in Plumas County.</p>
+		<p>Get ready to test your skills and battle for disc golf supremacy in the 2026 Plumas Series! This exciting 7-event series, held at the beautiful Pioneer Disc Golf Course, is designed for amateur players of all skill levels right here in Plumas County.</p>
 	</div>
 </div>
 <div class="mt-12 grid w-full xl:space-x-12 xl:grid-cols-2 px-4">
 	<div>
 		<h2 class="mb-6 text-center text-3xl font-bold">What is the Plumas Series?</h2>
 		<div class="prose mx-auto md:prose-xl mb-8 xl:mb-0">
-			<p>The Plumas Series is an 8 event disc golf tournament series spanning the entire 2025 season. Seven of the events will be handicap-based, allowing players of all abilities to compete on a level playing field. Earn points throughout the series to qualify for the climactic final event: a thrilling Survivor Razz Round Championship!</p>
+			<p>The Plumas Series is a 7 event disc golf tournament series spanning the entire 2026 season. Seven of the events will be handicap-based, allowing players of all abilities to compete on a level playing field. Earn points throughout the series to qualify for the climactic final event: a thrilling Survivor Razz Round Championship! Full series rules can be found <a href="/rules/plumas-series">here</a>.</p>
 			<p>
 				<strong>Cost:</strong>
 			</p>
@@ -33,15 +33,11 @@
 				<li>$12 per event for Non-Members</li>
 				<li>Survivor Razz Round is free and invite only. All players who have competed in at least one of the point series events are to be invited.</li>
 			</ul>
-
-			<p>
-				<strong>Payouts:</strong> Each handicap event will feature a 50/50 split. 50% of the registration fees will go towards the Plumas Disc Golf Club, and 50% will be paid out to the top 3 finishers of each event.
-			</p>
 			<p>
 				<strong>Who Can Play?</strong> This series is open to all amateur disc golfers. Whether you're just starting out or have been playing for years, come join the fun!
 			</p>
 			<p>
-				<strong>Registration Details:</strong> Registration will take place day-of for all events, and entry fees will be collected in person during check-in.
+				<strong>Registration Details:</strong> Pre-Registration is available online at <a href="https://discgolfscene.com" target="_blank">Disc Golf Scene</a>. On-site registration will take place day-of for all events, and entry fees will be collected in person during check-in.
 			</p>
 			<p><strong>Follow us on social media for updates:</strong></p>
 			<ul>
@@ -73,7 +69,7 @@
 		<h2 class="my-6 text-center text-3xl font-bold md:mt-0">Series Format</h2>
 		<div class="prose mx-auto mb-6 lg:prose-xl">
 			<ul>
-				<li><strong>Handicap Point Series Events (7Events):</strong> Compete against your peers using a handicap system that levels the playing field. This means everyone has a chance to win!</li>
+				<li><strong>Handicap Point Series Events (6 Events):</strong> Compete against your peers using a handicap system that levels the playing field. This means everyone has a chance to win!</li>
 				<li>
 					<strong>Survivor Razz Round Championship (1 event):</strong> All players who participated in the Plumas Series events will compete in this exciting elimination-style final! Each player will play hole 1, and the player with the worst score is eliminated. This continues hole by hole until only one player remains to be crowned the Plumas Series Champion! In the event of two or more players tied for worst score on a hole, the tie will be broken with a putt-off.
 				</li>
