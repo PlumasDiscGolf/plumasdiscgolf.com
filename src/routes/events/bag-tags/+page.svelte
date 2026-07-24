@@ -31,7 +31,7 @@
 			<p>
 				<strong>Competition and Camaraderie:</strong> Bag tag leagues are a great way to compete against other players, improve your game, and enjoy the camaraderie of the disc golf community.
 			</p>
-			<p>For the Plumas Disc Golf Bag Tag Leagues Comprehensive Rules, click <a href="/events/bag-tags/rules">here</a></p>
+			<p>For the Plumas Disc Golf Bag Tag Leagues Comprehensive Rules, click <a href="/rules/bag-tags">here</a></p>
 		</div>
 	</div>
 	<div class="w-full">

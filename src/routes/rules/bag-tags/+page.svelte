@@ -11,7 +11,7 @@
 <div class="hero bg-base-200">
 	<div class="hero-content py-12 text-center">
 		<div class="max-w-md">
-			<h1 class="text-5xl font-bold">Bag Tags League</h1>
+			<h1 class="text-5xl font-bold">Bag Tags League Rules</h1>
 		</div>
 	</div>
 </div>
