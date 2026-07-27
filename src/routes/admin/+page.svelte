@@ -1,6 +1,6 @@
 <script>
 	import { format, parseISO, isSameDay } from 'date-fns';
-	import { Icon, PencilSquare, Trash, PlusCircle, ArrowRightStartOnRectangle, CalendarDays, Map, Newspaper, UserGroup, Heart, CurrencyDollar, Users, CircleStack, ArrowDownTray, Ticket, ChevronUpDown, ChevronUp, ChevronDown, CheckCircle } from 'svelte-hero-icons';
+	import { Icon, PencilSquare, Trash, PlusCircle, ArrowRightStartOnRectangle, CalendarDays, Map, Newspaper, UserGroup, Heart, CurrencyDollar, Users, CircleStack, ArrowDownTray, Ticket, Tag, ChevronUpDown, ChevronUp, ChevronDown, CheckCircle, XCircle } from 'svelte-hero-icons';
 	import PocketBase from 'pocketbase';
 	import { page } from '$app/stores';
 	import { replaceState, invalidateAll } from '$app/navigation';
@@ -55,6 +55,17 @@
 	let sortedVolunteers = $derived(sortData(data.volunteers));
 	let sortedDonations = $derived(sortData(data.donations));
 	let sortedMemberships = $derived(sortData(data.memberships));
+
+	// --- Bag Tags: year filter ---
+	const currentYear = new Date().getFullYear();
+	let selectedBagTagYear = $state(currentYear);
+	let availableBagTagYears = $derived.by(() => {
+		const years = new Set((data.bagTags || []).map((t) => t.year));
+		years.add(currentYear); // always offer the current year, even before a season exists
+		return [...years].sort((a, b) => b - a);
+	});
+	let filteredBagTags = $derived((data.bagTags || []).filter((t) => t.year === selectedBagTagYear));
+	let sortedBagTags = $derived(sortData(filteredBagTags));
 	// --- END: SORTING LOGIC ---
 
 	const pb_client = new PocketBase('https://pdg.pockethost.io/');
@@ -66,7 +77,8 @@
 		{ id: 'boardMeetings', label: 'Board Meetings', icon: CalendarDays, addNewUrl: '/admin/board/meetings/new', editUrlBase: '/admin/board/meetings/edit' },
 		{ id: 'memberships', label: 'Memberships', icon: Users, addNewUrl: '/admin/memberships/new', editUrlBase: '/admin/memberships/edit' },
 		{ id: 'volunteers', label: 'Volunteers', icon: Heart, addNewUrl: '/admin/volunteers/new', editUrlBase: '/admin/volunteers/edit' },
-		{ id: 'donations', label: 'Donations', icon: CurrencyDollar, addNewUrl: '/admin/donations/new', editUrlBase: '/admin/donations/edit' }
+		{ id: 'donations', label: 'Donations', icon: CurrencyDollar, addNewUrl: '/admin/donations/new', editUrlBase: '/admin/donations/edit' },
+		{ id: 'bagTags', label: 'Bag Tags', icon: Tag, addNewUrl: '/admin/bag-tags/new', editUrlBase: '/admin/bag-tags/edit' }
 	];
 
 	let activeSectionId = $state('events');
@@ -564,6 +576,60 @@
 										</tr>
 									{/each}
 								{:else}<tr><td colspan="5" class="p-4 text-center italic">No donations yet.</td></tr>{/if}
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="p-4 {activeSectionId === 'bagTags' ? '' : 'hidden'}">
+					<div class="mb-4 flex flex-wrap items-end justify-between gap-2">
+						<div class="form-control">
+							<label class="label py-0" for="bagTagYearSelect"><span class="label-text">Season Year</span></label>
+							<select id="bagTagYearSelect" class="select select-bordered select-sm" bind:value={selectedBagTagYear}>
+								{#each availableBagTagYears as yr}
+									<option value={yr}>{yr}</option>
+								{/each}
+							</select>
+						</div>
+						<div class="flex gap-2">
+							<a href="/admin/bag-tags/new-season" class="btn btn-outline btn-sm"><Icon src={PlusCircle} class="mr-1 h-5 w-5"></Icon>Start New Season</a>
+							<a href="/admin/bag-tags/new" class="btn btn-secondary btn-sm"><Icon src={PlusCircle} class="mr-1 h-5 w-5"></Icon>Add Bag Tag Record</a>
+						</div>
+					</div>
+					<div class="mt-4 overflow-x-auto">
+						<table class="table table-zebra w-full">
+							<thead>
+								<tr>
+									<th onclick={() => setSortKey('league')} class="cursor-pointer">League <Icon src={sortKey === 'league' ? (sortOrder === 1 ? ChevronUp : ChevronDown) : ChevronUpDown} class="inline-block h-4 w-4" /></th>
+									<th onclick={() => setSortKey('tagNumber')} class="cursor-pointer">Tag # <Icon src={sortKey === 'tagNumber' ? (sortOrder === 1 ? ChevronUp : ChevronDown) : ChevronUpDown} class="inline-block h-4 w-4" /></th>
+									<th onclick={() => setSortKey('holderName')} class="cursor-pointer">Holder <Icon src={sortKey === 'holderName' ? (sortOrder === 1 ? ChevronUp : ChevronDown) : ChevronUpDown} class="inline-block h-4 w-4" /></th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								{#if sortedBagTags && sortedBagTags.length > 0}
+									{#each sortedBagTags as item (item.id)}
+										<tr>
+											<td>{item.league}</td>
+											<td>#{item.tagNumber}</td>
+											<td>{item.holderName}</td>
+											<td class="flex gap-2">
+												<a href="/admin/bag-tags/edit/{item.id}" title="Edit Bag Tag" class="btn btn-square btn-info btn-sm"><Icon src={PencilSquare} class="h-4 w-4"></Icon></a>
+												<form
+													method="POST"
+													action="?/delete"
+													use:enhance={enhanceDelete}
+													onsubmit={(e) => {
+														if (!window.confirm(`Delete bag tag #${item.tagNumber} (${item.league} ${item.year})?`)) e.preventDefault();
+													}}
+												>
+													<input type="hidden" name="collectionName" value="bag_tags" />
+													<input type="hidden" name="itemId" value={item.id} />
+													<button type="submit" title="Delete Bag Tag" class="btn btn-square btn-error btn-sm"><Icon src={Trash} class="h-4 w-4"></Icon></button>
+												</form>
+											</td>
+										</tr>
+									{/each}
+								{:else}<tr><td colspan="4" class="p-4 text-center italic">No bag tag records for {selectedBagTagYear}.</td></tr>{/if}
 							</tbody>
 						</table>
 					</div>
