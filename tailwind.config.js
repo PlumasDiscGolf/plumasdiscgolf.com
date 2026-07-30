@@ -9,7 +9,7 @@ export default {
 		extend: {}
 	},
 
-	plugins: [typography, forms, daisyui],
+	plugins: [typography, forms({ strategy: 'class' }), daisyui],
 	daisyui: {
 		themes: ['light', 'dark', 'emerald']
 	}
