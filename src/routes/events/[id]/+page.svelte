@@ -1,10 +1,19 @@
+<!-- src/routes/events/[id]/+page.svelte -->
+
 <script>
     import { format, parseISO, isSameDay } from 'date-fns';
     import { Icon, Calendar, MapPin, Trophy, UserPlus, CurrencyDollar } from 'svelte-hero-icons';
     import * as config from '$lib/config';
+    import { env } from '$env/dynamic/public';
     let { data } = $props();
 
     let event = $derived(data.event);
+
+    function fullAddress(location) {
+        return [location.address, location.city, [location.state, location.zipCode].filter(Boolean).join(' ')]
+            .filter(Boolean)
+            .join(', ');
+    }
 </script>
 
 <svelte:head>
@@ -14,7 +23,7 @@
 {#if event.bannerImage}
     <div
         class="hero relative min-h-[40vh]"
-        style="background-image: url({`https://pdg.pockethost.io/api/files/${event.collectionId}/${event.id}/${event.bannerImage}?download=1`})"
+        style="background-image: url({env.PUBLIC_POCKETBASE_FILES_URL}/api/files/{event.collectionId}/{event.id}/{event.bannerImage}?download=1)"
     >
         <div class="hero-overlay bg-opacity-20"></div>
         <div class="hero-content text-neutral-content h-full text-center">
@@ -65,9 +74,21 @@
                         <Icon src={MapPin} class="size-6" />
                         <h3 class="card-title">Where</h3>
                     </div>
-                    <div class="text-secondary mt-2 grid grid-cols-2 font-semibold">
+                    <div class="text-secondary mt-2 space-y-2 font-semibold">
                         {#each event.expand.location as location}
-                            <a href="/courses/{location.course}">{location.name}</a>
+                            <div>
+                                {#if location.course}
+                                    <a href="/courses/{location.course}" class="link">{location.name}</a>
+                                {:else}
+                                    <span>{location.name}</span>
+                                {/if}
+                                {#if fullAddress(location)}
+                                    <p class="text-sm font-normal">{fullAddress(location)}</p>
+                                {/if}
+                                {#if location.latitude && location.longitude}
+                                    <p class="text-sm font-normal">{location.latitude}, {location.longitude}</p>
+                                {/if}
+                            </div>
                         {/each}
                     </div>
                 </div>
@@ -131,7 +152,7 @@
         <div>
             {#if event.eventImage}
                 <img
-                    src="https://pdg.pockethost.io/api/files/{event.collectionId}/{event.id}/{event.eventImage}?download=1"
+                    src="{env.PUBLIC_POCKETBASE_FILES_URL}/api/files/{event.collectionId}/{event.id}/{event.eventImage}?download=1"
                     alt="Event banner"
                     class="w-full"
                 />

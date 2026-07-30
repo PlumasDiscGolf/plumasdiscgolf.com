@@ -3,6 +3,7 @@
 
     import * as config from '$lib/config.js';
     import { Icon, Clock, Calendar, ClipboardDocumentCheck } from 'svelte-hero-icons';
+    import { env } from '$env/dynamic/public';
 
     let { data } = $props();
 </script>
@@ -27,7 +28,7 @@
       <div class="card mb-8 border border-gray-400 bg-base-100 shadow-lg shadow-gray-400 lg:card-side lg:h-96">
             <figure class="lg:h-full lg:w-1/3">
                 {#if event.eventImage}
-                    <img src="https://pdg.pockethost.io/api/files/{event.collectionId}/{event.id}/{event.eventImage}?download=1" alt="Event banner" class="h-full w-full object-cover object-top" />
+                    <img src="{env.PUBLIC_POCKETBASE_FILES_URL}/api/files/{event.collectionId}/{event.id}/{event.eventImage}?download=1" alt="Event banner" class="h-full w-full object-cover object-top" />
                 {/if}
             </figure>
             <div class="card-body flex flex-col lg:w-2/3">
@@ -84,7 +85,7 @@
       <div class="card mb-8 border border-gray-400 bg-base-100 shadow-lg shadow-gray-400 lg:card-side lg:h-96">
             <figure class="lg:h-full lg:w-1/3">
                 {#if event.eventImage}
-                    <img src="https://pdg.pockethost.io/api/files/{event.collectionId}/{event.id}/{event.eventImage}?download=1" alt="Event banner" class="h-full w-full object-cover object-top" />
+                    <img src="{env.PUBLIC_POCKETBASE_FILES_URL}/api/files/{event.collectionId}/{event.id}/{event.eventImage}?download=1" alt="Event banner" class="h-full w-full object-cover object-top" />
                 {/if}
             </figure>
             <div class="card-body flex flex-col lg:w-2/3">
