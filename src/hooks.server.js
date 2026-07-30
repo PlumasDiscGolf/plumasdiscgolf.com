@@ -3,7 +3,7 @@ import PocketBase from 'pocketbase';
 
 export async function handle({ event, resolve }) {
 	// console.log(`[HOOKS] Request START: ${event.url.pathname}`);
-	event.locals.pb = new PocketBase('https://pdg.pockethost.io/');
+	event.locals.pb = new PocketBase('http://127.0.0.1:8090/');
 
 	const cookie = event.request.headers.get('cookie') || '';
 	// console.log('[HOOKS] Raw cookie from request:', cookie); // Can be very verbose
