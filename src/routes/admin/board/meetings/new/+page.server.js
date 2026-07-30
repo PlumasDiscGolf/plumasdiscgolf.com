@@ -2,10 +2,9 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { formatInputDateToPocketBase } from '$lib/utils.js';
 
-export const load = async ({ locals }) => {
-	if (!locals.user) {
-		throw redirect(303, '/login');
-	}
+export const load = async () => {
+	// No auth check needed here — the shared +layout.server.js already guards
+	// the entire /admin route tree before this load runs.
 	return {};
 };
 
@@ -39,9 +38,6 @@ export const actions = {
 			return fail(400, { ...currentValues, fieldErrors, error: 'Please correct the errors.' });
 		}
 
-		// We are already using formData, so we can append to it or create a new one if preferred
-		// For this case, it's simpler to just pass the received formData if fields match collection
-		// Or, build a new one to be explicit about what's sent:
 		const dataToSave = new FormData();
 		dataToSave.append('meetingDateTime', formattedMeetingDateTime);
 
@@ -65,6 +61,7 @@ export const actions = {
 			return fail(500, { ...currentValues, error: errorMessage });
 		}
 
-		throw redirect(303, '/admin#boardMeetings');
+		// Redirect to the new dedicated Board Meetings page (was /admin#boardMeetings)
+		throw redirect(303, '/admin/board/meetings?created=meeting');
 	}
 };

@@ -70,6 +70,6 @@ export const actions = {
 			}
 			return fail(500, { ...currentValues, error: errorMessage });
 		}
-		throw redirect(303, '/admin#volunteers');
+		throw redirect(303, '/admin/volunteers');
 	}
 };

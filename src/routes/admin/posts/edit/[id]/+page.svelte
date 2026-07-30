@@ -1,107 +1,118 @@
 <script>
     import { enhance } from '$app/forms';
     import { Icon, CheckCircle, XCircle, ArrowUturnLeft } from 'svelte-hero-icons';
-    import { formatPocketBaseDateToDateInput } from '$lib/utils.js'; // For YYYY-MM-DD format
+    import { formatPocketBaseDateToDateInput } from '$lib/utils.js';
 
-    let { data, form } = $props(); // data.post from load, form from action
+    let { data, form } = $props(); // data.post from load
 
-    let postTitle = $derived(form?.postTitle || data.post?.title || '');
-    let postPublishedDate = $derived(form?.postPublishedDate || formatPocketBaseDateToDateInput(data.post?.publishedDate));
-    let postCategories = $derived(form?.postCategories || (Array.isArray(data.post?.categories) ? data.post.categories.join(', ') : (data.post?.categories || '')));
-    let postContent = $derived(form?.postContent || data.post?.content || '');
-    let postPublished = $derived(form?.postPublished === undefined ? (data.post?.published === undefined ? true : data.post.published) : form.postPublished);
+    const CATEGORY_OPTIONS = ['Club News', 'Board', 'Website Updates', 'Cascades DGC', 'Pioneer DGC', 'Event'];
 
-    let postImageFile = $state(null);
-    let imagePreviewUrl = $derived(
-        (data.post?.image && data.post?.id && data.post?.collectionId) ?
-        `https://pdg.pockethost.io/api/files/${data.post.collectionId}/${data.post.id}/${data.post.image}?thumb=200x200` : ''
-    );
-    let existingFileName = $derived(data.post?.image || '');
+    // bind:value requires $state, not $derived. Initialize once from
+    // data.post, then sync from `form` via $effect whenever a submission
+    // fails and comes back with values to repopulate.
+    let title = $state(data.post?.title || '');
+    let content = $state(data.post?.content || '');
+    let published = $state(data.post?.published || false);
+    let publishedDate = $state(formatPocketBaseDateToDateInput(data.post?.publishedDate));
+    let selectedCategories = $state(data.post?.categories || []);
 
-    let isSaving = $state(false);
+    $effect(() => {
+        if (form) {
+            title = form.title ?? title;
+            content = form.content ?? content;
+            published = form.published ?? published;
+            publishedDate = form.publishedDate ?? publishedDate;
+            selectedCategories = form.categories ?? selectedCategories;
+        }
+    });
 
-    function handleFileSelect(e) {
-        const file = e.target.files?.[0];
-        if (file) {
-            postImageFile = file;
-            imagePreviewUrl = URL.createObjectURL(file);
+    function toggleCategory(cat) {
+        if (selectedCategories.includes(cat)) {
+            selectedCategories = selectedCategories.filter((c) => c !== cat);
         } else {
-            postImageFile = null;
-            imagePreviewUrl = (data.post?.image && data.post?.id && data.post?.collectionId) ?
-                `https://pdg.pockethost.io/api/files/${data.post.collectionId}/${data.post.id}/${data.post.image}?thumb=200x200` : '';
+            selectedCategories = [...selectedCategories, cat];
         }
     }
+
+    let isSaving = $state(false);
 </script>
 
 <div class="container mx-auto px-4 py-8 max-w-3xl">
     <div class="mb-6 flex items-center justify-between">
         <h1 class="text-3xl font-bold text-base-content">Edit Post: {data.post?.title || 'Loading...'}</h1>
-         <a href="/admin#posts" class="btn btn-ghost btn-sm">
+        <a href="/admin/posts" class="btn btn-ghost btn-sm">
             <Icon src={ArrowUturnLeft} class="h-5 w-5" />
             Back to Admin
         </a>
     </div>
 
     {#if form?.error}
-        <div class="alert alert-error mb-4 shadow-md"> </div>
+        <div class="alert alert-error mb-4 shadow-md">
+            <div><Icon src={XCircle} class="h-6 w-6 mr-2 shrink-0"></Icon><span>{form.error}</span></div>
+        </div>
     {/if}
     {#if form?.fieldErrors}
-        <div class="alert alert-warning mb-4 shadow-md"> </div>
+        <div class="alert alert-warning mb-4 shadow-md">
+            <ul class="list-disc pl-5">
+                {#each Object.entries(form.fieldErrors) as [field, errorMsg]}
+                    <li><strong>{field.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}:</strong> {errorMsg}</li>
+                {/each}
+            </ul>
+        </div>
     {/if}
 
     <form method="POST" action="?/updatePost" use:enhance={() => {
         isSaving = true;
-        return async ({ update, result }) => {
+        return async ({ update }) => {
             await update({ reset: false });
             isSaving = false;
         };
-    }} enctype="multipart/form-data" class="card bg-base-200 shadow-xl">
+    }} class="card bg-base-200 shadow-xl">
         <div class="card-body space-y-4">
-            <div class="form-control">
-                <label class="label" for="editPostTitleInput"><span class="label-text">Post Title*</span></label>
-                <input name="title" type="text" id="editPostTitleInput" class="input input-bordered w-full" bind:value={postTitle} required />
-            </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="form-control">
-                    <label class="label" for="editPostPublishedDateInput"><span class="label-text">Published Date*</span></label>
-                    <input name="publishedDate" type="date" id="editPostPublishedDateInput" class="input input-bordered w-full" bind:value={postPublishedDate} required />
+                    <label class="label" for="titleInput"><span class="label-text">Title*</span></label>
+                    <input name="title" type="text" id="titleInput" class="input input-bordered w-full" bind:value={title} required />
                 </div>
                 <div class="form-control">
-                    <label class="label" for="editPostCategoriesInput"><span class="label-text">Categories</span></label>
-                    <input name="categories" type="text" id="editPostCategoriesInput" class="input input-bordered w-full" bind:value={postCategories} />
-                     <span class="label-text-alt text-xs mt-1">Comma-separated, e.g., news, update</span>
+                    <label class="label" for="publishedDateInput"><span class="label-text">Published Date</span></label>
+                    <input name="publishedDate" type="date" id="publishedDateInput" class="input input-bordered w-full" bind:value={publishedDate} />
                 </div>
             </div>
 
             <div class="form-control">
-                <label class="label" for="editPostContentTextarea"><span class="label-text">Content*</span></label>
-                <textarea name="content" id="editPostContentTextarea" class="textarea textarea-bordered h-48 w-full" bind:value={postContent} required></textarea>
-            </div>
-
-            <div class="form-control items-start">
-                 <label class="label cursor-pointer gap-4 py-1">
-                    <span class="label-text">Published</span>
-                    <input type="hidden" name="published" value={postPublished ? 'on' : 'off'} />
-                    <input type="checkbox" id="editPostPublishedToggle" class="toggle toggle-primary" bind:checked={postPublished} />
-                </label>
+                <label class="label" for="contentTextarea"><span class="label-text">Content</span></label>
+                <textarea name="content" id="contentTextarea" class="textarea textarea-bordered h-48 w-full" bind:value={content}></textarea>
             </div>
 
             <div class="form-control">
-                <label class="label" for="editPostImageInput">
-                    <span class="label-text">Header Image</span>
-                    <span class="label-text-alt">(Optional - new image will replace old)</span>
+                <span class="label-text">Categories</span>
+                <div class="flex flex-wrap gap-3 mt-1">
+                    {#each CATEGORY_OPTIONS as cat}
+                        <label class="label cursor-pointer gap-2 py-1">
+                            <input
+                                type="checkbox"
+                                name="categories"
+                                value={cat}
+                                class="checkbox checkbox-sm"
+                                checked={selectedCategories.includes(cat)}
+                                onchange={() => toggleCategory(cat)}
+                            />
+                            <span class="label-text text-sm">{cat}</span>
+                        </label>
+                    {/each}
+                </div>
+            </div>
+
+            <div class="form-control">
+                <label class="label cursor-pointer justify-start gap-4 py-1">
+                    <input name="published" type="checkbox" class="toggle toggle-primary" bind:checked={published} />
+                    <span class="label-text">Published</span>
                 </label>
-                {#if imagePreviewUrl}
-                    <div class="mb-2"><img src={imagePreviewUrl} alt="preview" class="max-h-40 w-auto rounded border object-contain"/></div>
-                {:else if existingFileName}
-                     <p class="text-xs mb-1">Current image: {existingFileName} (upload new to replace)</p>
-                {/if}
-                <input name="image" type="file" id="editPostImageInput" class="file-input file-input-bordered file-input-sm w-full" onchange={handleFileSelect} accept="image/*" />
-                <input type="hidden" name="deleteExistingImage" value="false" /> </div>
+            </div>
 
             <div class="card-actions justify-end mt-6">
-                <a href="/admin?tab=tab3" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
+                <a href="/admin/posts" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
                 <button type="submit" class="btn btn-primary flex items-center gap-1.5" disabled={isSaving}>
                     {#if isSaving} <span class="loading loading-spinner loading-xs"></span> {/if}
                     <Icon src={CheckCircle} class="h-5 w-5" />

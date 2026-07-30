@@ -2,9 +2,8 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 
 export const load = async ({ locals, params }) => {
-	if (!locals.user) {
-		throw redirect(303, '/login');
-	}
+	// No auth check needed here — the shared +layout.server.js already guards
+	// the entire /admin route tree before this load runs.
 	try {
 		const member = await locals.pb.collection('board_members').getOne(params.id);
 		return {
@@ -53,7 +52,7 @@ export const actions = {
 		if (image && image.size > 0) {
 			dataToUpdate.append('image', image);
 		} else if (deleteExistingImage) {
-			dataToUpdate.append('image', null);
+			dataToUpdate.append('image', ''); // Empty string deletes the file — null gets stringified to "null" by FormData and rejected
 		}
 
 		try {
@@ -68,6 +67,7 @@ export const actions = {
 			}
 			return fail(500, { ...currentValues, error: errorMessage });
 		}
-		throw redirect(303, '/admin#boardMembers');
+		// Redirect to the new dedicated Board Members page (was /admin#boardMembers)
+		throw redirect(303, '/admin/board/members?updated=board member');
 	}
 };

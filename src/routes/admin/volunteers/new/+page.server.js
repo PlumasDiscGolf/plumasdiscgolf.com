@@ -2,10 +2,9 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { formatInputDateToPocketBase } from '$lib/utils.js';
 
-export const load = async ({ locals }) => {
-	if (!locals.user) {
-		throw redirect(303, '/login');
-	}
+export const load = async () => {
+	// No auth check needed here — the shared +layout.server.js already guards
+	// the entire /admin route tree before this load runs.
 	return {}; // No data to preload for a new volunteer form
 };
 
@@ -58,7 +57,7 @@ export const actions = {
 			return fail(500, { ...currentValues, error: errorMessage });
 		}
 
-		// Redirect to the volunteers tab on the admin page
-		throw redirect(303, '/admin#volunteers');
+		// Redirect to the new dedicated Volunteers page (was /admin#volunteers)
+		throw redirect(303, '/admin/volunteers?created=volunteer');
 	}
 };

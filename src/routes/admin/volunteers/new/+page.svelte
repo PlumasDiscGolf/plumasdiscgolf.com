@@ -5,9 +5,20 @@
 
     let { form } = $props();
 
-    let name = $derived(form?.name || '');
-    let task = $derived(form?.task || '');
-    let volunteerDate = $derived(form?.volunteerDate || format(new Date(), 'yyyy-MM-dd'));
+    // bind:value requires $state, not $derived (derived values are read-only).
+    // Initialize once, then sync from `form` via $effect whenever a submission
+    // fails and comes back with values to repopulate.
+    let name = $state('');
+    let task = $state('');
+    let volunteerDate = $state(format(new Date(), 'yyyy-MM-dd'));
+
+    $effect(() => {
+        if (form) {
+            name = form.name ?? name;
+            task = form.task ?? task;
+            volunteerDate = form.volunteerDate ?? volunteerDate;
+        }
+    });
 
     let isSaving = $state(false);
 </script>
@@ -15,7 +26,7 @@
 <div class="container mx-auto px-4 py-8 max-w-3xl">
     <div class="mb-6 flex items-center justify-between">
         <h1 class="text-3xl font-bold text-base-content">Add Volunteer Record</h1>
-        <a href="/admin#volunteers" class="btn btn-ghost btn-sm">
+        <a href="/admin/volunteers" class="btn btn-ghost btn-sm">
             <Icon src={ArrowUturnLeft} class="h-5 w-5" />
             Back to Admin
         </a>
@@ -41,14 +52,9 @@
 
     <form method="POST" action="?/createVolunteer" use:enhance={() => {
         isSaving = true;
-        return async ({ update, result }) => {
-            await update({ reset: (result.type === 'success') });
+        return async ({ update }) => {
+            await update();
             isSaving = false;
-            if (result.type === 'success' && !form?.error) {
-                name = '';
-                task = '';
-                volunteerDate = format(new Date(), 'yyyy-MM-dd');
-            }
         };
     }} class="card bg-base-200 shadow-xl">
         <div class="card-body space-y-4">
@@ -70,7 +76,7 @@
             </div>
 
             <div class="card-actions justify-end mt-6">
-                <a href="/admin#volunteers" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
+                <a href="/admin/volunteers" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
                 <button type="submit" class="btn btn-primary flex items-center gap-1.5" disabled={isSaving}>
                     {#if isSaving} <span class="loading loading-spinner loading-xs"></span> {/if}
                     <Icon src={CheckCircle} class="h-5 w-5" />

@@ -1,11 +1,17 @@
+<!-- src/routes/admin/board/meetings/edit/[id]/+page.svelte -->
 <script>
     import { enhance } from '$app/forms';
-    import { Icon, CheckCircle, XCircle, ArrowUturnLeft, ArrowDownTray, Trash } from 'svelte-hero-icons'; // Added Download
+    import { Icon, CheckCircle, XCircle, ArrowUturnLeft, ArrowDownTray, Trash } from 'svelte-hero-icons';
     import { formatPocketBaseDateToLocalInput } from '$lib/utils.js';
 
     let { data, form } = $props(); // data.meeting from load
 
-    let meetingDateTime = $derived(form?.meetingDateTime || formatPocketBaseDateToLocalInput(data.meeting?.meetingDateTime));
+    // All of these must be $state, not $derived — $derived values are
+    // read-only and can't be assigned to, which is what the effects below
+    // (and bind:value) need to do.
+    let meetingDateTime = $state(formatPocketBaseDateToLocalInput(data.meeting?.meetingDateTime));
+    let existingAgendaName = $state(data.meeting?.agendaFile || '');
+    let existingMinutesName = $state(data.meeting?.minutesFile || '');
 
     // State for new file uploads
     let agendaFile = $state(null);
@@ -17,32 +23,30 @@
     let deleteExistingAgenda = $state(false);
     let deleteExistingMinutes = $state(false);
 
-    // To display names/links of currently saved files
-    let existingAgendaUrl = $state('');
-    let existingMinutesUrl = $state('');
-    let existingAgendaName = $derived(data.meeting?.agendaFile || ''); // Assuming 'agendaFile' is field name
-    let existingMinutesName = $derived(data.meeting?.minutesFile || '');// Assuming 'minutesFile' is field name
+    let isSaving = $state(false);
 
-
-    // This effect runs when `data.meeting` changes (e.g., on initial load)
+    // Reset the display fields and any transient file-selection state
+    // whenever the underlying meeting record changes — e.g. navigating
+    // directly between two different meetings' edit pages without a full
+    // component remount.
     $effect(() => {
         if (data.meeting) {
             meetingDateTime = formatPocketBaseDateToLocalInput(data.meeting.meetingDateTime);
-            // Assuming your PocketBase client (pb_client) is accessible for getFileUrl
-            // or you construct URL manually if pb_client is not directly here.
-            // For simplicity, we'll just use the filename for display.
-            // To get full URL, you'd need pb_client.files.getUrl(data.meeting, data.meeting.agendaFile)
             existingAgendaName = data.meeting.agendaFile || '';
             existingMinutesName = data.meeting.minutesFile || '';
 
-            // Clear file selections from previous interactions
             agendaFile = null; selectedAgendaFileName = ''; deleteExistingAgenda = false;
             minutesFile = null; selectedMinutesFileName = ''; deleteExistingMinutes = false;
         }
     });
 
-
-    let isSaving = $state(false);
+    // Separately, repopulate the date field if a submission fails and comes
+    // back with a value to fix.
+    $effect(() => {
+        if (form?.meetingDateTime) {
+            meetingDateTime = form.meetingDateTime;
+        }
+    });
 
     function handleAgendaFileSelect(e) {
         const file = e.target.files?.[0];
@@ -72,22 +76,34 @@
 <div class="container mx-auto px-4 py-8 max-w-xl">
     <div class="mb-6 flex items-center justify-between">
         <h1 class="text-3xl font-bold text-base-content">Edit Board Meeting</h1>
-         <a href="/admin#boardMeetings" class="btn btn-ghost btn-sm">
+         <a href="/admin/board/meetings" class="btn btn-ghost btn-sm">
             <Icon src={ArrowUturnLeft} class="h-5 w-5" />
             Back to Admin
         </a>
     </div>
 
-    <!-- {#if form?.error} {/if}
-    {#if form?.fieldErrors} {/if} -->
+    {#if form?.error}
+        <div class="alert alert-error mb-4 shadow-md">
+            <div><Icon src={XCircle} class="h-6 w-6 mr-2 shrink-0"></Icon><span>{form.error}</span></div>
+        </div>
+    {/if}
+    {#if form?.fieldErrors}
+        <div class="alert alert-warning mb-4 shadow-md">
+            <ul class="list-disc pl-5">
+                {#each Object.entries(form.fieldErrors) as [field, message]}
+                    <li>{message}</li>
+                {/each}
+            </ul>
+        </div>
+    {/if}
 
     <form method="POST" action="?/updateBoardMeeting" use:enhance={() => {
         isSaving = true;
-        return async ({ update, result }) => {
+        return async ({ update }) => {
             await update({ reset: false });
             isSaving = false;
             // On successful update, the page will redirect.
-            // If errors, form fields will retain their values.
+            // If errors, form fields retain their values via the $effect above.
         };
     }} enctype="multipart/form-data" class="card bg-base-200 shadow-xl">
         <div class="card-body space-y-4">
@@ -131,7 +147,7 @@
             </div>
 
             <div class="card-actions justify-end mt-6">
-                <a href="/admin?tab=tab4" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
+                <a href="/admin/board/meetings" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
                 <button type="submit" class="btn btn-primary flex items-center gap-1.5" disabled={isSaving}>
                     {#if isSaving} <span class="loading loading-spinner loading-xs"></span> {/if}
                     <Icon src={CheckCircle} class="h-5 w-5" />

@@ -47,7 +47,7 @@
 <div class="container mx-auto max-w-xl px-4 py-8">
 	<div class="mb-6 flex items-center justify-between">
 		<h1 class="text-3xl font-bold text-base-content">Add New Board Member</h1>
-		<a href="/admin#boardMembers" class="btn btn-ghost btn-sm">
+		<a href="/admin/board/members" class="btn btn-ghost btn-sm">
 			<Icon src={ArrowUturnLeft} class="h-5 w-5" />
 			Back to Admin
 		</a>
@@ -68,22 +68,18 @@
 		</div>
 	{/if}
 
+	<!-- Always redirects on success, so there's no reachable "reset fields"
+	     branch here — a redirect destroys this component entirely. Keeping
+	     the callback to just isSaving avoids the unreachable-branch
+	     complexity that caused the Volunteers freeze. -->
 	<form
 		method="POST"
 		action="?/createBoardMember"
 		use:enhance={() => {
 			isSaving = true;
-			return async ({ update, result }) => {
-				await update({ reset: result.type === 'success' && !form?.error && !form?.fieldErrors });
+			return async ({ update }) => {
+				await update();
 				isSaving = false;
-				if (result.type === 'success' && !form?.error && !form?.fieldErrors) {
-					memberName = '';
-					memberRole = 'Director'; // Reset to default
-					memberBio = '';
-					memberActive = true;
-					memberImageFile = null;
-					selectedImageFileName = '';
-				}
 			};
 		}}
 		enctype="multipart/form-data"
@@ -146,7 +142,7 @@
 			</div>
 
 			<div class="card-actions mt-6 justify-end">
-				<a href="/admin?tab=tab4" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
+				<a href="/admin/board/members" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
 				<button type="submit" class="btn btn-primary flex items-center gap-1.5" disabled={isSaving}>
 					{#if isSaving}
 						<span class="loading loading-spinner loading-xs"></span>

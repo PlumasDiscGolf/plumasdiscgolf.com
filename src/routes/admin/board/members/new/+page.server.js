@@ -1,10 +1,9 @@
 // src/routes/admin/board/members/new/+page.server.js
 import { fail, redirect } from '@sveltejs/kit';
 
-export const load = async ({ locals }) => {
-	if (!locals.user) {
-		throw redirect(303, '/login');
-	}
+export const load = async () => {
+	// No auth check needed here — the shared +layout.server.js already guards
+	// the entire /admin route tree before this load runs.
 	return {}; // No data to preload
 };
 
@@ -63,6 +62,7 @@ export const actions = {
 			return fail(500, { ...currentValues, error: errorMessage });
 		}
 
-		throw redirect(303, '/admin#boardMembers');
+		// Redirect to the new dedicated Board Members page (was /admin#boardMembers)
+		throw redirect(303, '/admin/board/members?created=board member');
 	}
 };

@@ -3,9 +3,8 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import { formatInputDateToPocketBase } from '$lib/utils.js';
 
 export const load = async ({ locals, params }) => {
-	if (!locals.user) {
-		throw redirect(303, '/login');
-	}
+	// No auth check needed here — the shared +layout.server.js already guards
+	// the entire /admin route tree before this load runs.
 	try {
 		const meeting = await locals.pb.collection('board_meetings').getOne(params.id);
 		return {
@@ -48,8 +47,6 @@ export const actions = {
 			return fail(400, { ...currentValues, fieldErrors, error: 'Please correct the errors.' });
 		}
 
-		// We are already getting formData, so we can pass it directly if field names match,
-		// or build a new one. Building new one for clarity on file handling.
 		const dataToUpdate = new FormData();
 		dataToUpdate.append('meetingDateTime', formattedMeetingDateTime);
 
@@ -57,7 +54,7 @@ export const actions = {
 		if (agendaFile && agendaFile.size > 0) {
 			dataToUpdate.append('agendaFile', agendaFile); // PB field name for agenda file
 		} else if (deleteExistingAgenda) {
-			dataToUpdate.append('agendaFile', null); // Send null to delete existing file
+			dataToUpdate.append('agendaFile', ''); // Empty string tells PocketBase to delete the existing file — FormData.append(key, null) silently stringifies to "null" and gets rejected as an invalid file
 		}
 		// If no new file and not deleting, don't append 'agendaFile', existing remains.
 
@@ -65,15 +62,9 @@ export const actions = {
 		if (minutesFile && minutesFile.size > 0) {
 			dataToUpdate.append('minutesFile', minutesFile); // PB field name for minutes file
 		} else if (deleteExistingMinutes) {
-			dataToUpdate.append('minutesFile', null); // Send null to delete existing file
+			dataToUpdate.append('minutesFile', ''); // Same fix as agendaFile above
 		}
 		// If no new file and not deleting, don't append 'minutesFile', existing remains.
-
-		// If you still have link fields and want to update them
-		// const agendaLink = formData.get('agendaLink')?.toString() || '';
-		// const minutesLink = formData.get('minutesLink')?.toString() || '';
-		// dataToUpdate.append('agendaLink', agendaLink);
-		// dataToUpdate.append('minutesLink', minutesLink);
 
 		try {
 			await locals.pb.collection('board_meetings').update(params.id, dataToUpdate);
@@ -87,6 +78,7 @@ export const actions = {
 			}
 			return fail(500, { ...currentValues, error: errorMessage });
 		}
-		throw redirect(303, '/admin#boardMeetings');
+		// Redirect to the new dedicated Board Meetings page (was /admin#boardMeetings)
+		throw redirect(303, '/admin/board/meetings?updated=meeting');
 	}
 };

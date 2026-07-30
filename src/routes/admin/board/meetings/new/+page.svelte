@@ -1,3 +1,4 @@
+<!-- src/routes/admin/board/meetings/new/+page.svelte -->
 <script>
     import { enhance } from '$app/forms';
     import { Icon, CheckCircle, XCircle, ArrowUturnLeft } from 'svelte-hero-icons';
@@ -5,7 +6,16 @@
 
     let { form } = $props();
 
-    let meetingDateTime = $derived(form?.meetingDateTime || moment().format('YYYY-MM-DDTHH:mm'));
+    // bind:value requires $state, not $derived (derived values are read-only).
+    // Initialize once, then sync from `form` via $effect whenever a submission
+    // fails and comes back with values to repopulate.
+    let meetingDateTime = $state(moment().format('YYYY-MM-DDTHH:mm'));
+
+    $effect(() => {
+        if (form) {
+            meetingDateTime = form.meetingDateTime ?? meetingDateTime;
+        }
+    });
 
     let agendaFile = $state(null); // For <input type="file">
     let minutesFile = $state(null); // For <input type="file">
@@ -40,7 +50,7 @@
 <div class="container mx-auto px-4 py-8 max-w-xl">
     <div class="mb-6 flex items-center justify-between">
         <h1 class="text-3xl font-bold text-base-content">Add New Board Meeting</h1>
-        <a href="/admin#boardMeetings" class="btn btn-ghost btn-sm">
+        <a href="/admin/board/meetings" class="btn btn-ghost btn-sm">
             <Icon src={ArrowUturnLeft} class="h-5 w-5" />
             Back to Admin
         </a>
@@ -63,17 +73,15 @@
         </div>
     {/if}
 
+    <!-- This form always redirects to /admin/board/meetings on success, so there is
+         no reachable "reset fields after success" case here — a redirect destroys
+         this component entirely. Keeping the callback to just isSaving avoids the
+         kind of unreachable-branch complexity that caused the Volunteers freeze. -->
     <form method="POST" action="?/createBoardMeeting" use:enhance={() => {
         isSaving = true;
-        return async ({ update, result }) => {
-            await update({ reset: (result.type === 'success' && !form?.error && !form?.fieldErrors) });
+        return async ({ update }) => {
+            await update();
             isSaving = false;
-            if (result.type === 'success' && !form?.error && !form?.fieldErrors) {
-                meetingDateTime = moment().format('YYYY-MM-DDTHH:mm');
-                // agendaLink = ''; minutesLink = ''; // If keeping links
-                agendaFile = null; selectedAgendaFileName = '';
-                minutesFile = null; selectedMinutesFileName = '';
-            }
         };
     }} enctype="multipart/form-data" class="card bg-base-200 shadow-xl">
         <div class="card-body space-y-4">
@@ -105,7 +113,7 @@
             </div>
 
             <div class="card-actions justify-end mt-6">
-                <a href="/admin?tab=tab4" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
+                <a href="/admin/board/meetings" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
                 <button type="submit" class="btn btn-primary flex items-center gap-1.5" disabled={isSaving}>
                     {#if isSaving} <span class="loading loading-spinner loading-xs"></span> {/if}
                     <Icon src={CheckCircle} class="h-5 w-5" />

@@ -2,6 +2,7 @@
 <script>
 	import { enhance } from '$app/forms';
 	import { Icon, CheckCircle, XCircle, ArrowUturnLeft } from 'svelte-hero-icons';
+	import { env } from '$env/dynamic/public';
 
 	let { data, form } = $props();
 
@@ -112,7 +113,7 @@
 				{#if data.member?.image && !deleteExistingImage}
 					<div class="mb-2 flex items-center gap-3">
 						<img
-							src="https://pdg.pockethost.io/api/files/{data.member.collectionId}/{data.member.id}/{data.member.image}?thumb=100x100"
+							src="{env.PUBLIC_POCKETBASE_FILES_URL}/api/files/{data.member.collectionId}/{data.member.id}/{data.member.image}?download=1"
 							alt="Current profile"
 							class="h-16 w-16 rounded-full object-cover"
 						/>
