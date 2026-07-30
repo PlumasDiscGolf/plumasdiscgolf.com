@@ -5,9 +5,18 @@
 
     let { form } = $props(); // For receiving errors from the server action
 
-    let loginEmail = $derived(form?.email || ''); // Pre-fill email on error
+    // bind:value requires $state, not $derived (derived values are read-only).
+    // Initialize once, then sync from `form` via $effect whenever a submission
+    // fails and comes back with a value to repopulate.
+    let loginEmail = $state('');
     let loginPassword = $state('');
     let loginInProgress = $state(false);
+
+    $effect(() => {
+        if (form) {
+            loginEmail = form.email ?? loginEmail;
+        }
+    });
 
     // Clear password if form had an error and email was prefilled
     $effect(() => {
