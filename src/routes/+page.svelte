@@ -1,6 +1,7 @@
 <script>
 	import { format, parseISO, isSameDay } from 'date-fns';
 	import { Icon, Map, Calendar, UserGroup, CheckCircle, Ticket, Sparkles } from 'svelte-hero-icons';
+	import { env } from '$env/dynamic/public';
 	import * as config from '$lib/config.js';
 
 	let { data } = $props();
@@ -120,7 +121,7 @@
 				<div class="card overflow-hidden bg-base-100 shadow-lg shadow-gray-400">
 					<figure class="h-48 w-full">
 						<img
-							src="https://pdg.pockethost.io/api/files/{course.collectionId}/{course.id}/{course.image}?download=1"
+							src="{env.PUBLIC_POCKETBASE_FILES_URL}/api/files/{course.collectionId}/{course.id}/{course.image}?download=1"
 							alt="{course.name} banner"
 							class="h-full w-full object-cover"
 						/>
@@ -171,7 +172,7 @@
                             </div>
                             <div>
                             <div class="card-actions mt-2 justify-between">
-                                <img src="https://pdg.pockethost.io/api/files/{event.collectionId}/{event.id}/{event.eventImage}?download=1" alt="" width="64px">
+                                <img src="{env.PUBLIC_POCKETBASE_FILES_URL}/api/files/{event.collectionId}/{event.id}/{event.eventImage}?download=1" alt="" width="64px">
                                 <div class="mt-auto">
                                     <a href="/events/{event.id}" class="btn btn-primary btn-sm">More Info</a>
                                 </div>
