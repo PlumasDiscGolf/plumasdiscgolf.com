@@ -1,5 +1,7 @@
+<!-- src/routes/courses/+page.svelte -->
+
 <script >
-	
+	import { env } from '$env/dynamic/public';
 	import * as config from '$lib/config.js';
 
 	let { data } = $props();
@@ -25,7 +27,7 @@
 		<div class="card mb-8 md:max-h-72 bg-base-100 shadow-lg shadow-gray-400 lg:card-side">
 			<figure class="w-full lg:w-1/3">
 				<img
-					src="http://pdg.pockethost.io/api/files/{course.collectionId}/{course.id}/{course.image}?download=1}"
+					src="{env.PUBLIC_POCKETBASE_FILES_URL}/api/files/{course.collectionId}/{course.id}/{course.image}?download=1"
 					alt="course banner"
 					class="h-full w-full object-cover"
 				/>
@@ -69,7 +71,7 @@
 							d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
 						/>
 					</svg>
-					<span>{course.location}</span>
+					<span>{course.cityState}</span>
 				</div>
 				<div class="md:h-96">
 					<p>{@html course.description.substring(0, 250)} ...</p>
