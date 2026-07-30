@@ -20,9 +20,9 @@
 				<li><a href="/courses" aria-label="courses link">Courses</a></li>
 				<li><a href="/rules" aria-label="club and events rules link">Rules</a></li>
 				<li class="pl-3"><a href="/rules/disc-golf">Rules of Disc Golf</a></li>
-				<li class="pl-3"><a href="/rules/disc-golf">Club Rules</a></li>
-				<li class="pl-3"><a href="/rules/disc-golf">Bag Tags Rules</a></li>
-				<li class="pl-3"><a href="/rules/disc-golf">Plumas Series Rules</a></li>
+				<li class="pl-3"><a href="/rules/club">Club Rules</a></li>
+				<li class="pl-3"><a href="/rules/bag-tags">Bag Tags Rules</a></li>
+				<li class="pl-3"><a href="/rules/plumas-series">Plumas Series Rules</a></li>
 				<li><a href="/board" aria-label="board link">Board</a></li>
 				<li><a href="/donate" aria-label="donate link">Donate</a></li>
 				<li><a href="/about" aria-label="about link">About</a></li>
