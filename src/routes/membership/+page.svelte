@@ -22,19 +22,19 @@
 		<div class="lg:w-2/5">
 			<div class="card bg-base-100 shadow-lg shadow-gray-400">
 				<div class="card-body lg:prose lg:min-h-[800px]">
-  				<div class="my-4 w-full text-pretty">
-        		<p class="my-4 font-semibold text-secondary">Becoming a Club Member is one of the best ways to support Plumas Disc Golf. Memberships are one of our primary fundraising sources each year. Thank you for your support!</p>
-        		<p class="font-bold">The Standard Membership includes:</p>
-        		<ul class="ml-3">
-         			<li>A Custom PDG Bag Tag</li>
-         			<li>Entry into all bag tag league events for the year</li>
-         			<li>Discounted entry into club events for the year</li>
-        		</ul>
-        		<p class="font-bold">The Youth Membership includes everything in the Standard Membership and is available to players who are 18 years old or younger.</p>
-        		<ul class="ml-3">
-         			<li> Eligibility follows the PDGA's age-based division guidelines — your age is determined by your year of birth, not your birthday. Any player who turns 18 or younger during the current calendar year qualifies.</li>
-        		</ul>
-         	</div>
+					<div class="my-4 w-full text-pretty">
+						<p class="my-4 font-semibold text-secondary">Becoming a Club Member is one of the best ways to support Plumas Disc Golf. Memberships are one of our primary fundraising sources each year. Thank you for your support!</p>
+						<p class="font-bold">The Standard Membership includes:</p>
+						<ul class="ml-3">
+							<li>A Custom PDG Bag Tag</li>
+							<li>Entry into all bag tag league events for the year</li>
+							<li>Discounted entry into club events for the year</li>
+						</ul>
+						<p class="font-bold">The Youth Membership includes everything in the Standard Membership and is available to players who are 18 years old or younger.</p>
+						<ul class="ml-3">
+							<li> Eligibility follows the PDGA's age-based division guidelines — your age is determined by your year of birth, not your birthday. Any player who turns 18 or younger during the current calendar year qualifies.</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
