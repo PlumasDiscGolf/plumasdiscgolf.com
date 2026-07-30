@@ -1,7 +1,8 @@
+<!-- src/routes/board/+page.svelte -->
 <script>
-    /** @type {import('./$types').PageData} */
     import { format, parseISO } from 'date-fns';
     import * as config from '$lib/config';
+    import { env } from '$env/dynamic/public';
     let { data } = $props();
 
 </script>
@@ -25,7 +26,7 @@
         {#each data.activeMembers as member}
             <div class="card mb-8 bg-base-200 shadow-xl lg:card-side">
                 <figure class="lg:w-1/3">
-                    <img src="http://pdg.pockethost.io/api/files/{member.collectionId}/{member.id}/{member.image}?download=1}" alt="member banner" class="h-full w-full object-cover" />
+                    <img src="{env.PUBLIC_POCKETBASE_FILES_URL}/api/files/{member.collectionId}/{member.id}/{member.image}?thumb=200x200" alt="member banner" class="h-64 w-full object-scale-down" />
                 </figure>
                 <div class="card-body lg:w-2/3">
                     <div class="flex flex-wrap gap-2">
@@ -66,14 +67,14 @@
                     <tr class="hover">
                         <th>{format(parseISO(meeting.meetingDateTime), 'MMMM do, yyyy')}</th>
                         <td
-                            ><a href="http://pdg.pockethost.io/api/files/{meeting.collectionId}/{meeting.id}/{meeting.agendaFile}?download=1}" target="_blank" class="btn btn-primary btn-sm">Agenda</a
+                            ><a href="{env.PUBLIC_POCKETBASE_FILES_URL}/api/files/{meeting.collectionId}/{meeting.id}/{meeting.agendaFile}?download=1" target="_blank" class="btn btn-primary btn-sm">Agenda</a
                             ></td
                         >
                         {#if !meeting.minutesFile}
                             <td>-</td>
                         {:else}
                             <td
-                                ><a href="http://pdg.pockethost.io/api/files/{meeting.collectionId}/{meeting.id}/{meeting.minutesFile}?download=1}" target="_blank" class="btn btn-secondary btn-sm"
+                                ><a href="{env.PUBLIC_POCKETBASE_FILES_URL}/api/files/{meeting.collectionId}/{meeting.id}/{meeting.minutesFile}?download=1" target="_blank" class="btn btn-secondary btn-sm"
                                     >Minutes</a
                                 ></td
                             >

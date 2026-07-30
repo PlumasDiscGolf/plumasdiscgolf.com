@@ -1,4 +1,4 @@
-
+// src/routes/board/+page.server.js
 export async function load({ locals }) {
 	const boardMembers = await locals.pb.collection('board_members').getFullList();
 	const boardMeetings = await locals.pb.collection('board_meetings').getList(1, 12, {
