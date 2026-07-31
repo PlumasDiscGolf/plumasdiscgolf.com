@@ -2,6 +2,7 @@
 	import { Icon, ArrowRightStartOnRectangle, CircleStack, Tag, Home, Heart, CalendarDays, UserGroup, Users, UserCircle, Map as MapIcon, Ticket, Newspaper, CheckCircle, PencilSquare, MapPin } from 'svelte-hero-icons';
 	import { page } from '$app/stores';
 	import { replaceState } from '$app/navigation';
+	import * as config from '$lib/config.js';
 
 	let { data, children } = $props();
 
@@ -110,6 +111,10 @@
 		}
 	});
 </script>
+
+<svelte:head>
+	<title>{config.title} - Admin Panel</title>
+</svelte:head>
 
 <div class="container mx-auto px-4 pt-4">
 	{#if successAlertMessage}
