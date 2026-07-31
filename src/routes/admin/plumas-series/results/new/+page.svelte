@@ -127,7 +127,7 @@
 				</div>
 				<div class="form-control">
 					<label class="label" for="pointsInput"><span class="label-text">Points</span></label>
-					<input name="points" type="number" step="0.01" id="pointsInput" class="input input-bordered w-full" bind:value={points} />
+					<input name="points" type="number" step="1" id="pointsInput" class="input input-bordered w-full" bind:value={points} />
 				</div>
 			</div>
 

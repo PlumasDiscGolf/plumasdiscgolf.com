@@ -196,11 +196,7 @@
 	{/if}
 </div>
 
-<div class="w-full">
-	<div class="prose mx-auto mt-6 max-w-[72ch] lg:prose-xl px-4">
-		<p>Get ready to test your skills and battle for disc golf supremacy in the 2026 Plumas Series! This exciting 7-event series, held at Pioneer Disc Golf Course, is designed for amateur players of all skill levels right here in Plumas County.</p>
-	</div>
-</div>
+
 <div class="mt-12 grid w-full xl:space-x-12 xl:grid-cols-2 px-4">
 	<div>
 		<h2 class="mb-6 text-center text-3xl font-bold">What is the Plumas Series?</h2>

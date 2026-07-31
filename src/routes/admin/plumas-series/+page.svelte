@@ -16,6 +16,31 @@
 		return member ? `${member.firstName} ${member.lastName}` : result.guestName || 'Unknown Player';
 	}
 
+	// Parses a leading rank number out of a place string like "1st", "T2nd" —
+	// only used as a fallback for Championship results, which don't carry
+	// points. Handicap results sort on points directly, sidestepping the
+	// number-vs-string ordering problems of sorting on `place` text.
+	function parsePlaceRank(place) {
+		const match = String(place ?? '').match(/(\d+)/);
+		return match ? parseInt(match[0], 10) : null;
+	}
+
+	function sortResults(results) {
+		return results.slice().sort((a, b) => {
+			const aPts = typeof a.points === 'number' ? a.points : null;
+			const bPts = typeof b.points === 'number' ? b.points : null;
+			if (aPts !== null && bPts !== null) return bPts - aPts; // higher points first
+			if (aPts !== null) return -1;
+			if (bPts !== null) return 1;
+			const aRank = parsePlaceRank(a.place);
+			const bRank = parsePlaceRank(b.place);
+			if (aRank === null && bRank === null) return 0;
+			if (aRank === null) return 1;
+			if (bRank === null) return -1;
+			return aRank - bRank;
+		});
+	}
+
 	let resultsByEventId = $derived.by(() => {
 		const map = new Map();
 		for (const result of data.seriesResults || []) {
@@ -95,9 +120,7 @@
 </div>
 
 {#each eventsForSeason as event (event.id)}
-	{@const results = (resultsByEventId.get(event.id) || [])
-		.slice()
-		.sort((a, b) => String(a.place ?? '').localeCompare(String(b.place ?? ''), undefined, { numeric: true }))}
+	{@const results = sortResults(resultsByEventId.get(event.id) || [])}
 	<div class="mb-8 rounded-lg border border-base-300">
 		<div class="flex flex-wrap items-center justify-between gap-2 bg-base-200 p-4">
 			<div>
