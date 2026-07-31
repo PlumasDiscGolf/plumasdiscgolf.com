@@ -2,12 +2,10 @@
 import { fail, redirect } from '@sveltejs/kit';
 
 export const load = async ({ locals, url }) => {
-	// If user is already logged in, redirect them from /login to /admin
 	if (locals.user) {
-		console.log('[LOGIN PAGE LOAD] User already logged in, redirecting to /admin. User ID:', locals.user.id);
 		throw redirect(303, '/admin');
 	}
-	return {}; // No data needed for the login page itself
+	return { resetSuccess: url.searchParams.get('resetSuccess') === 'true' };
 };
 
 export const actions = {
