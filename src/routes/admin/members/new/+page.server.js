@@ -7,7 +7,7 @@ export const load = async ({ locals }) => {
 	// Loaded so the form can warn (client-side) about a likely duplicate name
 	// before submitting — not a hard uniqueness constraint, just a heads-up,
 	// since two real people can share a name.
-	const members = await locals.pb.collection('members').getFullList({ sort: 'lastName,firstName' });
+	const members = await locals.pb.collection('members').getFullList({ sort: 'firstName,lastName' });
 	return { members };
 };
 

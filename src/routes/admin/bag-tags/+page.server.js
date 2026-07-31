@@ -20,7 +20,7 @@ export const load = async ({ locals }) => {
 	});
 
 	// All members, for the assign-tag picker dropdown
-	const members = await locals.pb.collection('members').getFullList({ sort: 'lastName,firstName' });
+	const members = await locals.pb.collection('members').getFullList({ sort: 'firstName,lastName' });
 
 	return { bagTags, bagTagAssignments, members };
 };

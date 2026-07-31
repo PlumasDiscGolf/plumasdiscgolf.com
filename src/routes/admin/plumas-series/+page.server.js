@@ -14,11 +14,11 @@ export const load = async ({ locals }) => {
 	});
 
 	const seriesResults = await locals.pb.collection('plumas_series_results').getFullList({
-		sort: 'place',
+		sort: '-points',
 		expand: 'memberId'
 	});
 
-	const members = await locals.pb.collection('members').getFullList({ sort: 'lastName,firstName' });
+	const members = await locals.pb.collection('members').getFullList({ sort: 'firstName,lastName' });
 
 	return { seasons, seriesEvents, seriesResults, members };
 };

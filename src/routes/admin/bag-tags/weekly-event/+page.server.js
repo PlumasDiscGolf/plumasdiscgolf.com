@@ -7,7 +7,7 @@ export const load = async ({ locals }) => {
 		throw redirect(303, '/login');
 	}
 
-	const members = await locals.pb.collection('members').getFullList({ sort: 'lastName,firstName' });
+	const members = await locals.pb.collection('members').getFullList({ sort: 'firstName,lastName' });
 
 	// Same "load everything, filter client-side" pattern as the other bag tags
 	// pages — used here for the live display/summary only. The action below

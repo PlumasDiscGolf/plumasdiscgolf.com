@@ -24,7 +24,7 @@ export const load = async ({ locals, url }) => {
 	const asOfDate = url.searchParams.get('asOfDate') || '';
 	const page = Math.max(1, Number(url.searchParams.get('page')) || 1);
 
-	const members = await locals.pb.collection('members').getFullList({ sort: 'lastName,firstName' });
+	const members = await locals.pb.collection('members').getFullList({ sort: 'firstName,lastName' });
 	const bagTags = await locals.pb.collection('bag_tags').getFullList({ sort: '-season,league,tagNumber' });
 
 	const currentYear = new Date().getFullYear();

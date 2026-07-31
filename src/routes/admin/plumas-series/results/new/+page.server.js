@@ -5,7 +5,7 @@ export const load = async ({ locals, url }) => {
 	// No auth check needed here — the shared /admin +layout.server.js already
 	// guards the entire route tree before this load runs.
 	const events = await locals.pb.collection('plumas_series_events').getFullList({ sort: 'eventNumber', expand: 'seasonId' });
-	const members = await locals.pb.collection('members').getFullList({ sort: 'lastName,firstName' });
+	const members = await locals.pb.collection('members').getFullList({ sort: 'firstName,lastName' });
 
 	return {
 		events,

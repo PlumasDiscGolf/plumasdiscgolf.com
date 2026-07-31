@@ -7,7 +7,7 @@ export const load = async ({ locals, params }) => {
 	try {
 		const result = await locals.pb.collection('plumas_series_results').getOne(params.id);
 		const events = await locals.pb.collection('plumas_series_events').getFullList({ sort: 'eventNumber', expand: 'seasonId' });
-		const members = await locals.pb.collection('members').getFullList({ sort: 'lastName,firstName' });
+		const members = await locals.pb.collection('members').getFullList({ sort: 'firstName,lastName' });
 
 		return {
 			result: JSON.parse(JSON.stringify(result)),
