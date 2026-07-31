@@ -1,6 +1,115 @@
-<script >
-
+<script>
 	import * as config from '$lib/config';
+
+	let { data } = $props();
+
+	const currentYear = new Date().getFullYear();
+
+	// Default to the most recent season on record, since that's the one
+	// most likely to be "in progress" — falls back to nothing selected if
+	// no seasons exist yet.
+	let selectedSeasonId = $state(data.seriesSeasons?.[0]?.id ?? '');
+	let selectedSeason = $derived((data.seriesSeasons || []).find((s) => s.id === selectedSeasonId));
+
+	let handicapEventsForSeason = $derived(
+		(data.seriesEvents || [])
+			.filter((e) => e.seasonId === selectedSeasonId && e.type === 'Handicap')
+			.sort((a, b) => a.eventNumber - b.eventNumber)
+	);
+
+	let championshipEventForSeason = $derived((data.seriesEvents || []).find((e) => e.seasonId === selectedSeasonId && e.type === 'Championship'));
+
+	// How many of a player's best handicap-event results count toward their
+	// total — driven by the season record so this can change year to year
+	// (e.g. best 5 of 7 one season, best 4 of 6 the next) without a code change.
+	let countingEvents = $derived(selectedSeason?.countingEvents ?? handicapEventsForSeason.length);
+
+	function playerName(result) {
+		const member = result.expand?.memberId;
+		return member ? `${member.firstName} ${member.lastName}` : result.guestName || 'Unknown Player';
+	}
+
+	function playerKey(result) {
+		return result.memberId ? `member:${result.memberId}` : `guest:${result.guestName}`;
+	}
+
+	// One row per player: name, their result at each handicap event this
+	// season, which of those results counted toward the total (the season's
+	// best-N-of-M rule, per `countingEvents` above), and the resulting total.
+	let standingsRows = $derived.by(() => {
+		const handicapEventIds = new Set(handicapEventsForSeason.map((e) => e.id));
+		const rows = new Map();
+
+		for (const result of data.seriesResults || []) {
+			if (!handicapEventIds.has(result.eventId)) continue;
+			const key = playerKey(result);
+			if (!rows.has(key)) rows.set(key, { key, name: playerName(result), byEvent: {} });
+			rows.get(key).byEvent[result.eventId] = { place: result.place, points: result.points };
+		}
+
+		for (const row of rows.values()) {
+			const scored = Object.entries(row.byEvent)
+				.filter(([, v]) => typeof v.points === 'number')
+				.map(([eventId, v]) => ({ eventId, points: v.points }))
+				.sort((a, b) => b.points - a.points);
+			row.countedEventIds = new Set(scored.slice(0, countingEvents).map((e) => e.eventId));
+			row.totalPoints = scored.slice(0, countingEvents).reduce((sum, e) => sum + e.points, 0);
+		}
+
+		// Rank by total points; ties broken by comparing each player's full
+		// set of event point totals from best to worst (series rules 6.2).
+		const sorted = [...rows.values()].sort((a, b) => {
+			if (b.totalPoints !== a.totalPoints) return b.totalPoints - a.totalPoints;
+			const aPts = Object.values(a.byEvent)
+				.map((e) => e.points)
+				.filter((p) => typeof p === 'number')
+				.sort((x, y) => y - x);
+			const bPts = Object.values(b.byEvent)
+				.map((e) => e.points)
+				.filter((p) => typeof p === 'number')
+				.sort((x, y) => y - x);
+			for (let i = 0; i < Math.max(aPts.length, bPts.length); i++) {
+				const diff = (bPts[i] ?? 0) - (aPts[i] ?? 0);
+				if (diff !== 0) return diff;
+			}
+			return a.name.localeCompare(b.name);
+		});
+
+		let place = 0;
+		let lastTotal = null;
+		return sorted.map((row, i) => {
+			if (row.totalPoints !== lastTotal) place = i + 1;
+			lastTotal = row.totalPoints;
+			return { ...row, place };
+		});
+	});
+
+	// Parses a leading rank number out of a place string like "1st", "T2nd",
+	// "3rd" — tolerant of tie markers or other prefixes, since results are
+	// entered as free text.
+	function parsePlaceRank(place) {
+		const match = String(place ?? '').match(/(\d+)/);
+		return match ? parseInt(match[0], 10) : null;
+	}
+
+	const PODIUM_LABELS = { 1: 'Club Champion', 2: 'Runner-Up', 3: 'Third Place' };
+	const PODIUM_MEDALS = { 1: '🥇', 2: '🥈', 3: '🥉' };
+	// The championship round decides the Club Champion title — this title
+	// stays stable even if the event format itself changes in the future.
+	const PODIUM_STYLES = {
+		1: 'bg-[#FFD700] text-black',
+		2: 'bg-[#C0C0C0] text-black',
+		3: 'bg-[#CD7F32] text-white'
+	};
+
+	let championPodium = $derived.by(() => {
+		if (!championshipEventForSeason) return [];
+		return (data.seriesResults || [])
+			.filter((r) => r.eventId === championshipEventForSeason.id)
+			.map((r) => ({ ...r, rank: parsePlaceRank(r.place), name: playerName(r) }))
+			.filter((r) => r.rank !== null && r.rank <= 3)
+			.sort((a, b) => a.rank - b.rank);
+	});
 </script>
 
 <svelte:head>
@@ -15,9 +124,81 @@
 		</div>
 	</div>
 </div>
+
+<!-- Current Standings -->
+<div class="mt-16 w-full px-4">
+	<div class="mx-auto mb-6 flex max-w-5xl flex-wrap items-center justify-between gap-4">
+		<h2 class="text-3xl font-bold">{selectedSeason?.year === currentYear ? 'Current Standings' : selectedSeason ? `${selectedSeason.year} Final Standings` : 'Standings'}</h2>
+		{#if data.seriesSeasons?.length > 0}
+			<div class="form-control">
+				<label class="label py-0" for="standingsSeasonSelect"><span class="label-text">Season</span></label>
+				<select id="standingsSeasonSelect" class="select select-bordered select-sm w-36" bind:value={selectedSeasonId}>
+					{#each data.seriesSeasons as s}
+						<option value={s.id}>{s.year}</option>
+					{/each}
+				</select>
+			</div>
+		{/if}
+	</div>
+
+	{#if championPodium.length > 0}
+		<div class="mx-auto mb-6 grid max-w-5xl gap-3 md:grid-cols-3">
+			{#each championPodium as entry (entry.id)}
+				<div class="rounded-box p-4 shadow-md {PODIUM_STYLES[entry.rank]}">
+					<div class="text-sm font-semibold uppercase tracking-wide opacity-80">{PODIUM_MEDALS[entry.rank]} {selectedSeason.year} {PODIUM_LABELS[entry.rank]}</div>
+					<div class="text-lg font-bold">{entry.name}</div>
+				</div>
+			{/each}
+		</div>
+	{/if}
+
+	<div class="mx-auto max-w-5xl overflow-x-auto">
+		<table class="table table-zebra w-full">
+			<thead>
+				<tr>
+					<th class="w-16">Place</th>
+					<th>Name</th>
+					<th class="text-center">Total Points</th>
+					{#each handicapEventsForSeason as event, i}
+						<th class="text-center">Event #{i + 1}</th>
+					{/each}
+				</tr>
+			</thead>
+			<tbody>
+				{#if standingsRows.length > 0}
+					{#each standingsRows as row (row.key)}
+						<tr>
+							<td class="font-bold">{row.place}</td>
+							<td>{row.name}</td>
+							<td class="text-center font-bold">{row.totalPoints}</td>
+							{#each handicapEventsForSeason as event}
+								{@const entry = row.byEvent[event.id]}
+								<td class="text-center" class:font-bold={row.countedEventIds.has(event.id)}>
+									{#if entry}
+										{entry.points} <br /> ({entry.place})
+									{:else}
+										-
+									{/if}
+								</td>
+							{/each}
+						</tr>
+					{/each}
+				{:else}
+					<tr><td colspan={3 + handicapEventsForSeason.length} class="p-4 text-center italic">No results for {selectedSeason?.year ?? 'this season'} yet.</td></tr>
+				{/if}
+			</tbody>
+		</table>
+	</div>
+	{#if standingsRows.length > 0}
+		<p class="mx-auto mt-3 max-w-5xl text-sm italic opacity-70">
+			Bolded event scores are the ones counting toward Total Points (best {countingEvents} of {selectedSeason?.totalEvents ?? handicapEventsForSeason.length} handicap events).
+		</p>
+	{/if}
+</div>
+
 <div class="w-full">
 	<div class="prose mx-auto mt-6 max-w-[72ch] lg:prose-xl px-4">
-		<p>Get ready to test your skills and battle for disc golf supremacy in the 2026 Plumas Series! This exciting 7-event series, held at the beautiful Pioneer Disc Golf Course, is designed for amateur players of all skill levels right here in Plumas County.</p>
+		<p>Get ready to test your skills and battle for disc golf supremacy in the 2026 Plumas Series! This exciting 7-event series, held at Pioneer Disc Golf Course, is designed for amateur players of all skill levels right here in Plumas County.</p>
 	</div>
 </div>
 <div class="mt-12 grid w-full xl:space-x-12 xl:grid-cols-2 px-4">

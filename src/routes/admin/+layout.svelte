@@ -1,5 +1,5 @@
 <script>
-	import { Icon, ArrowRightStartOnRectangle, CircleStack, Tag, Home, Heart, CalendarDays, UserGroup, Users, UserCircle, Map as MapIcon, Ticket, Newspaper, CheckCircle, PencilSquare, MapPin } from 'svelte-hero-icons';
+	import { Icon, ArrowRightStartOnRectangle, CircleStack, Tag, Trophy, Home, Heart, CalendarDays, UserGroup, Users, UserCircle, Map as MapIcon, Ticket, Newspaper, CheckCircle, PencilSquare, MapPin } from 'svelte-hero-icons';
 	import { page } from '$app/stores';
 	import { replaceState } from '$app/navigation';
 	import * as config from '$lib/config.js';
@@ -8,7 +8,6 @@
 
 	// Sections that don't belong to any group — plain top-level links.
 	const ungroupedSections = [
-		{ href: '/admin/bag-tags', label: 'Bag Tags', icon: Tag },
 		{ href: '/admin/courses', label: 'Courses', icon: MapIcon },
 		{ href: '/admin/events', label: 'Events', icon: Ticket },
 		{ href: '/admin/locations', label: 'Locations', icon: MapPin },
@@ -20,10 +19,10 @@
 	// shorter individual labels (since the group name already gives context).
 	const groupedSections = [
 		{
-			groupLabel: 'Board',
+			groupLabel: 'Leagues & Series',
 			items: [
-				{ href: '/admin/board/members', label: 'Directors', icon: UserGroup },
-				{ href: '/admin/board/meetings', label: 'Meetings', icon: CalendarDays }
+				{ href: '/admin/bag-tags', label: 'Bag Tags', icon: Tag },
+				{ href: '/admin/plumas-series', label: 'Plumas Series', icon: Trophy }
 			]
 		},
 		{
@@ -32,6 +31,13 @@
 				{ href: '/admin/members', label: 'Members', icon: UserCircle },
 				{ href: '/admin/memberships', label: 'Memberships', icon: Users },
 				{ href: '/admin/waivers', label: 'Waivers', icon: PencilSquare }
+			]
+		},
+		{
+			groupLabel: 'Board',
+			items: [
+				{ href: '/admin/board/members', label: 'Directors', icon: UserGroup },
+				{ href: '/admin/board/meetings', label: 'Meetings', icon: CalendarDays }
 			]
 		}
 	];
