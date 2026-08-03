@@ -148,7 +148,7 @@
                                     <td>
                                         <input type="checkbox" name="attended_{member.id}" class="checkbox" bind:checked={attendance[member.id].attended} />
                                     </td>
-                                    <td>{member.lastName}, {member.firstName}{member.nickname ? ` (${member.nickname})` : ''}</td>
+                                    <td>{member.firstName} {member.lastName} {member.nickname ? ` (${member.nickname})` : ''}</td>
                                     <td>{currentTagByMemberId.has(member.id) ? `#${currentTagByMemberId.get(member.id)}` : 'None'}</td>
                                     <td>
                                         <input
