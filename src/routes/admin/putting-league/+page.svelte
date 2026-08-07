@@ -220,7 +220,7 @@
 				<form method="POST" action="?/calculatePayouts" use:enhance={enhanceCalculate}>
 					<input type="hidden" name="eventId" value={event.id} />
 					<button type="submit" class="btn btn-accent btn-sm" disabled={paidCount === 0}>
-						<Icon src={CurrencyDollar} class="mr-1 h-4 w-4"></Icon>Calculate Payouts
+						<Icon src={CurrencyDollar} class="mr-1 h-4 w-4"></Icon>Payouts
 					</button>
 				</form>
 				<a href="/admin/putting-league/events/edit/{event.id}" class="btn btn-square btn-info btn-sm">
