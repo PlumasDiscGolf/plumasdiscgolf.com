@@ -16,12 +16,14 @@
 				<li class=""><a href="/events" aria-label="events link">Events</a></li>
 				<li class="pl-3"><a href="/events/calendar" aria-label="calendar link">Calendar</a></li>
 				<li class="pl-3"><a href="/events/bag-tags" aria-label="bag tags link">Bag Tags League</a></li>
+				<li class="pl-3"><a href="/events/putting-league" aria-label="bag tags link">Putting League</a></li>
 				<li class="pl-3"><a href="/events/plumas-series" aria-label="plumas series link">Plumas Series</a></li>
 				<li><a href="/courses" aria-label="courses link">Courses</a></li>
 				<li><a href="/rules" aria-label="club and events rules link">Rules</a></li>
 				<li class="pl-3"><a href="/rules/disc-golf">Rules of Disc Golf</a></li>
 				<li class="pl-3"><a href="/rules/club">Club Rules</a></li>
 				<li class="pl-3"><a href="/rules/bag-tags">Bag Tags Rules</a></li>
+				<li class="pl-3"><a href="/rules/putting-league">Putting League Rules</a></li>
 				<li class="pl-3"><a href="/rules/plumas-series">Plumas Series Rules</a></li>
 				<li><a href="/board" aria-label="board link">Board</a></li>
 				<li><a href="/donate" aria-label="donate link">Donate</a></li>
@@ -45,6 +47,7 @@
 					<li><a href="/events/calendar">Calendar</a></li>
 					<li><a href="/events">Event Listing</a></li>
 					<li><a href="/events/bag-tags">Bag Tags Leagues</a></li>
+					<li><a href="/events/putting-league">Putting League</a></li>
 					<li><a href="/events/plumas-series">Plumas Series</a></li>
 				</ul>
 			</li>
@@ -61,13 +64,14 @@
 					<li><a href="/rules/disc-golf">Rules of Disc Golf</a></li>
 					<li><a href="/rules/club">Club Rules</a></li>
 					<li><a href="/rules/bag-tags">Bag Tag League Rules</a></li>
+					<li><a href="/rules/putting-league">Putting League Rules</a></li>
 					<li><a href="/rules/plumas-series">Plumas Series Rules</a></li>
 				</ul>
 			</li>
 			<li><a href="/board" aria-label="board link">Board</a></li>
 			<li><a href="/donate" aria-label="donate link">Donate</a></li>
 			<li><a href="/about" aria-label="about link">About</a></li>
-			<li><a href="https://shop.plumasdiscgolf.com" aria-label="shop link">Shop</a></li>
+			<!-- <li><a href="https://shop.plumasdiscgolf.com" aria-label="shop link">Shop</a></li> -->
 		</ul>
 	</div>
 	<div class="navbar-end">

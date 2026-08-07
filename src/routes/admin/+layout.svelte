@@ -1,5 +1,5 @@
 <script>
-	import { Icon, ArrowRightStartOnRectangle, CircleStack, Tag, Trophy, Home, Heart, CalendarDays, UserGroup, Users, UserCircle, Map as MapIcon, Ticket, Newspaper, CheckCircle, PencilSquare, MapPin } from 'svelte-hero-icons';
+	import { Icon, ArrowRightStartOnRectangle, CircleStack, Tag, Trophy, Home, Heart, CalendarDays, UserGroup, Users, UserCircle, Map as MapIcon, Ticket, Newspaper, CheckCircle, PencilSquare, MapPin, CurrencyDollar } from 'svelte-hero-icons';
 	import { page } from '$app/stores';
 	import { replaceState } from '$app/navigation';
 	import * as config from '$lib/config.js';
@@ -22,7 +22,8 @@
 			groupLabel: 'Leagues & Series',
 			items: [
 				{ href: '/admin/bag-tags', label: 'Bag Tags', icon: Tag },
-				{ href: '/admin/plumas-series', label: 'Plumas Series', icon: Trophy }
+				{ href: '/admin/plumas-series', label: 'Plumas Series', icon: Trophy },
+				{ href: '/admin/putting-league', label: 'Putting League', icon: CurrencyDollar }
 			]
 		},
 		{

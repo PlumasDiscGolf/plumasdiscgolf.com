@@ -75,7 +75,7 @@
 
 		<h2>Want to Learn More?</h2>
 		<p>
-			This page covers the basics to get you out on the course with confidence. For the complete Official Rules of Disc Golf, or to dig into more	advanced rulings and edge cases, visit <a href="https://www.pdga.com/rules" target="_blank" rel="noopener noreferrer">the PDGA's rules page</a>. And if you're playing in any Plumas Disc Golf event, be sure to check out our <a href="/rules/club">Club Rules</a>, <a href="/rules/bag-tags">Bag Tags League Rules</a>, and <a href="/rules/plumas-series">Plumas Series Rules</a> for anything specific to our events.
+			This page covers the basics to get you out on the course with confidence. For the complete Official Rules of Disc Golf, or to dig into more	advanced rulings and edge cases, visit <a href="https://www.pdga.com/rules" target="_blank" rel="noopener noreferrer">the PDGA's rules page</a>. And if you're playing in any Plumas Disc Golf event, be sure to check out our <a href="/rules/club">Club Rules</a>, <a href="/rules/bag-tags">Bag Tags League Rules</a>, <a href="/rules/putting-league">Putting League Rules</a>, and <a href="/rules/plumas-series">Plumas Series Rules</a> for anything specific to our events.
 		</p>
 	</div>
 </div>
