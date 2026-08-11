@@ -98,5 +98,27 @@ export const actions = {
 			return fail(500, { tagNumber: tagNumberStr, league, season: seasonStr, error: errorMessage });
 		}
 		throw redirect(303, '/admin/bag-tags');
+	},
+
+	delete: async ({ locals, params }) => {
+		if (!locals.user) {
+			return fail(401, { error: 'User not authenticated.' });
+		}
+		if (!params.id) {
+			return fail(400, { error: 'Bag tag ID is missing.' });
+		}
+
+		try {
+			await locals.pb.collection('bag_tags').delete(params.id);
+		} catch (err) {
+			console.error('Error deleting bag tag record:', err);
+			return fail(500, { error: 'Failed to delete bag tag record.' });
+		}
+
+		// Deleting from the edit page always means leaving it — there's no
+		// "stay on the page" case the way the old row-level delete needed to
+		// preserve, so a plain redirect (picked up by the shared layout's
+		// unified banner) fits naturally here.
+		throw redirect(303, '/admin/bag-tags?deleted=bag tag');
 	}
 };

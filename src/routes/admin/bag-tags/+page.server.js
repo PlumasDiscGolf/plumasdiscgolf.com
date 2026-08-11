@@ -26,28 +26,9 @@ export const load = async ({ locals }) => {
 };
 
 export const actions = {
-	delete: async ({ request, locals }) => {
-		if (!locals.user) {
-			return fail(401, { error: 'User not authenticated.' });
-		}
-
-		const formData = await request.formData();
-		const collectionName = formData.get('collectionName')?.toString();
-		const itemId = formData.get('itemId')?.toString();
-
-		if (!collectionName || !itemId) {
-			return fail(400, { error: 'Missing required parameters for deletion.' });
-		}
-
-		try {
-			await locals.pb.collection(collectionName).delete(itemId);
-		} catch (err) {
-			console.error(`Error deleting item from ${collectionName}:`, err);
-			return fail(500, { error: `Failed to delete item.` });
-		}
-
-		return { success: true };
-	},
+	// The generic `delete` action that used to live here (for the row-level
+	// delete button) has moved to the Edit page instead, next to Cancel —
+	// deleting a tag record is now done from there, not from this table.
 
 	undoAssignment: async ({ request, locals }) => {
 		if (!locals.user) {
@@ -95,6 +76,4 @@ export const actions = {
 
 		return { success: true };
 	}
-
-	// `?/undoAssignment` is now implemented above — no longer an open item.
 };

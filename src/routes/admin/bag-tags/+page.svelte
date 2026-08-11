@@ -1,6 +1,6 @@
 <script>
 	import { format, parseISO } from 'date-fns';
-	import { Icon, PencilSquare, Trash, PlusCircle, ArrowUturnLeft, UserGroup, Clock, ChevronUpDown, ChevronUp, ChevronDown, CheckCircle, XCircle, Tag } from 'svelte-hero-icons';
+	import { Icon, PencilSquare, PlusCircle, ArrowUturnLeft, UserGroup, Clock, ChevronUpDown, ChevronUp, ChevronDown, CheckCircle, XCircle } from 'svelte-hero-icons';
 	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 
@@ -133,7 +133,7 @@
 	</div>
 	<div class="flex gap-2">
 		<a href="/admin/bag-tags/history" class="btn btn-neutral btn-sm"><Icon src={Clock} class="mr-1 h-5 w-5"></Icon>History</a>
-		<a href="/admin/bag-tags/weekly-event" class="btn btn-primary btn-sm"><Icon src={Tag} class="mr-1 h-5 w-5"></Icon>Weekly Event</a>
+		<a href="/admin/bag-tags/weekly-event" class="btn btn-accent btn-sm"><Icon src={UserGroup} class="mr-1 h-5 w-5"></Icon>Weekly Event</a>
 		<a href="/admin/bag-tags/new" class="btn btn-secondary btn-sm"><Icon src={PlusCircle} class="mr-1 h-5 w-5"></Icon>Add New Tags</a>
 	</div>
 </div>
@@ -174,18 +174,6 @@
 									<button type="submit" title="Undo Last Assignment" class="btn btn-square btn-warning btn-sm"><Icon src={ArrowUturnLeft} class="h-4 w-4"></Icon></button>
 								</form>
 							{/if}
-							<form
-								method="POST"
-								action="?/delete"
-								use:enhance={enhanceDelete}
-								onsubmit={(e) => {
-									if (!window.confirm(`Delete tag #${item.tagNumber} (${item.league} ${item.season}) entirely? This also removes its full assignment history.`)) { e.preventDefault(); e.stopImmediatePropagation(); }
-								}}
-							>
-								<input type="hidden" name="collectionName" value="bag_tags" />
-								<input type="hidden" name="itemId" value={item.id} />
-								<button type="submit" title="Delete Tag Record" class="btn btn-square btn-error btn-sm"><Icon src={Trash} class="h-4 w-4"></Icon></button>
-							</form>
 						</td>
 					</tr>
 				{/each}

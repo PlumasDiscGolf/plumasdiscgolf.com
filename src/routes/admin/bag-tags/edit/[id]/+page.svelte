@@ -1,6 +1,7 @@
+<!-- src/routes/admin/bag-tags/edit/[id]/+page.svelte -->
 <script>
     import { enhance } from '$app/forms';
-    import { Icon, CheckCircle, XCircle, ArrowUturnLeft } from 'svelte-hero-icons';
+    import { Icon, CheckCircle, XCircle, ArrowUturnLeft, Trash } from 'svelte-hero-icons';
 
     let { data, form } = $props(); // data.bagTag, data.hasAssignments from load; form from action
 
@@ -20,6 +21,7 @@
     });
 
     let isSaving = $state(false);
+    let isDeleting = $state(false);
 </script>
 
 <div class="container mx-auto px-4 py-8 max-w-2xl">
@@ -34,7 +36,6 @@
     <p class="mb-6 text-sm opacity-70">
         This edits the tag record itself — not who currently holds it. Use "Assign" from the admin table to change the holder.
     </p>
-
     {#if data.hasAssignments}
         <div class="alert alert-info mb-4 shadow-md">
             <span>This tag already has assignment history, so League and Season are locked — changing either would leave that history pointing at the wrong season/league. Only the tag number can be corrected here.</span>
@@ -56,13 +57,24 @@
         </div>
     {/if}
 
-    <form method="POST" action="?/updateBagTag" use:enhance={() => {
-        isSaving = true;
-        return async ({ update }) => {
-            await update({ reset: false });
-            isSaving = false;
-        };
-    }} class="card bg-base-200 shadow-xl">
+    <!-- The update form is given an id so the "Update Record" button below can
+         submit it via the form="..." attribute, even though that button lives
+         outside this form's own DOM nesting — necessary because the delete
+         form (also below) can't be nested inside this one; nested <form>
+         elements are invalid HTML and browsers won't handle them reliably. -->
+    <form
+        id="updateBagTagForm"
+        method="POST"
+        action="?/updateBagTag"
+        use:enhance={() => {
+            isSaving = true;
+            return async ({ update }) => {
+                await update({ reset: false });
+                isSaving = false;
+            };
+        }}
+        class="card bg-base-200 shadow-xl"
+    >
         <div class="card-body space-y-4">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="form-control">
@@ -82,15 +94,39 @@
                     <input name="season" type="number" step="1" id="seasonInput" class="input input-bordered w-full" bind:value={season} readonly={data.hasAssignments} required />
                 </div>
             </div>
-
-            <div class="card-actions justify-end mt-6">
-                <a href="/admin/bag-tags" class="btn btn-ghost" disabled={isSaving}>Cancel</a>
-                <button type="submit" class="btn btn-primary flex items-center gap-1.5" disabled={isSaving}>
-                    {#if isSaving} <span class="loading loading-spinner loading-xs"></span> {/if}
-                    <Icon src={CheckCircle} class="h-5 w-5" />
-                    Update Record
-                </button>
-            </div>
         </div>
     </form>
+
+    <div class="card-actions justify-between mt-6">
+        <form
+            method="POST"
+            action="?/delete"
+            use:enhance={() => {
+                isDeleting = true;
+                return async ({ update }) => {
+                    await update();
+                    isDeleting = false;
+                };
+            }}
+            onsubmit={(e) => {
+                if (!window.confirm(`Delete tag #${data.bagTag?.tagNumber} (${data.bagTag?.league} ${data.bagTag?.season}) entirely? This also removes its full assignment history.`)) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                }
+            }}
+        >
+            <button type="submit" class="btn btn-error btn-outline flex items-center gap-1.5" disabled={isSaving || isDeleting}>
+                {#if isDeleting} <span class="loading loading-spinner loading-xs"></span> {:else} <Icon src={Trash} class="h-5 w-5" /> {/if}
+                Delete Record
+            </button>
+        </form>
+        <div class="flex gap-2">
+            <a href="/admin/bag-tags" class="btn btn-ghost" disabled={isSaving || isDeleting}>Cancel</a>
+            <button type="submit" form="updateBagTagForm" class="btn btn-primary flex items-center gap-1.5" disabled={isSaving || isDeleting}>
+                {#if isSaving} <span class="loading loading-spinner loading-xs"></span> {/if}
+                <Icon src={CheckCircle} class="h-5 w-5" />
+                Update Record
+            </button>
+        </div>
+    </div>
 </div>
