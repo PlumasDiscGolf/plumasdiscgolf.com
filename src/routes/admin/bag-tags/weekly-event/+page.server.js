@@ -119,8 +119,11 @@ export const actions = {
 		}
 		availableTags.sort((a, b) => a.tagNumber - b.tagNumber);
 
-		// Build the pool: each attendee's own current tag, plus the lowest
-		// available tags for any no-current-tag attendees.
+		// A newcomer (no current tag of their own) has nothing to contribute
+		// to the pool, so there must be at least enough vacant tags to give
+		// each of them one — independent of the "pull in ALL vacant tags"
+		// change below, which is about which tags get PRIORITIZED, not
+		// whether there are enough to go around at all.
 		const noTagAttendees = attendees.filter((a) => !currentTagByMemberId.has(a.memberId));
 		if (noTagAttendees.length > availableTags.length) {
 			return fail(409, {
@@ -129,12 +132,18 @@ export const actions = {
 			});
 		}
 
+		// Build the pool: every attendee's own current tag, PLUS every currently
+		// vacant tag for this league/season — not just enough to cover
+		// newcomers. A vacant tag (e.g. one just forfeited) should be able to
+		// compete for this week's rankings even when nobody new needs a tag
+		// at all, which is exactly the case that was missed before: with zero
+		// newcomers, no vacant tag ever entered the pool, no matter how good.
 		const pool = [];
 		for (const attendee of attendees) {
 			const currentTag = currentTagByMemberId.get(attendee.memberId);
 			if (currentTag) pool.push(currentTag);
 		}
-		pool.push(...availableTags.slice(0, noTagAttendees.length));
+		pool.push(...availableTags);
 		pool.sort((a, b) => a.tagNumber - b.tagNumber);
 
 		// Sort attendees by placement, tie-broken by their OWN current tag
@@ -148,15 +157,55 @@ export const actions = {
 			return tagA - tagB;
 		});
 
+		// Only the best (lowest) tags actually get distributed this round —
+		// one per attendee. The pool can be larger than the attendee count
+		// once every vacant tag is included, so anything beyond what's
+		// needed (excess vacant tags, or an attendee's own tag that didn't
+		// make the cut because a better vacant tag took its place) is simply
+		// not assigned here; it stays or becomes vacant going forward.
+		const poolForDistribution = pool.slice(0, sortedAttendees.length);
+
 		// Pair position-for-position — 1st place gets the lowest tag in the pool.
-		// Written as one atomic batch: every attendee's new assignment succeeds
-		// together, or none do.
+		// Written as one atomic batch: every attendee's new assignment (and any
+		// resulting vacate record) succeeds together, or none do.
+		//
+		// IMPORTANT ordering note: it's entirely possible for the same tag to
+		// be both vacated by one attendee and claimed by another WITHIN this
+		// same run (someone bumped up to exactly the tag someone else just
+		// lost). Since "who currently holds a tag" is resolved by whichever
+		// assignment record was created most recently, every vacate record
+		// must be written BEFORE every new-claim record in this batch — not
+		// interleaved per-attendee — otherwise a reused tag could end up
+		// looking vacant again if its vacate happened to land after its new
+		// claim in write order.
 		try {
 			const formattedEventDate = formatInputDateToPocketBase(eventDate);
 			const batch = locals.pb.createBatch();
+
+			for (let i = 0; i < sortedAttendees.length; i++) {
+				const newTag = poolForDistribution[i];
+				const previousTag = currentTagByMemberId.get(sortedAttendees[i].memberId);
+
+				// If this attendee's new tag differs from the one they came in
+				// with, their OLD tag needs its own vacate record first —
+				// otherwise its most-recent assignment row (from whenever they
+				// originally got it) still shows THEM as the current holder,
+				// even though they've moved on to a better tag this round.
+				if (previousTag && previousTag.bagTagId !== newTag.bagTagId) {
+					batch.collection('bag_tag_assignments').create({
+						bagTagId: previousTag.bagTagId,
+						memberId: null,
+						season,
+						league,
+						assignedAt: formattedEventDate,
+						reason: 'Upgraded'
+					});
+				}
+			}
+
 			for (let i = 0; i < sortedAttendees.length; i++) {
 				batch.collection('bag_tag_assignments').create({
-					bagTagId: pool[i].bagTagId,
+					bagTagId: poolForDistribution[i].bagTagId,
 					memberId: sortedAttendees[i].memberId,
 					season,
 					league,
@@ -164,6 +213,7 @@ export const actions = {
 					reason: 'League Round'
 				});
 			}
+
 			await batch.send();
 		} catch (err) {
 			console.error('Error writing weekly redistribution:', err.response || err.originalError || err);
