@@ -18,8 +18,8 @@
 	<title>{config.title} - Homepage</title>
 </svelte:head>
 
-<!-- Hero -->
 <Container maxWidth="lg" style="padding: var(--space-2);">
+	<!-- Hero -->
 	<Hero minHeight="md" image={pioneerImg}>
 		<Container maxWidth="md">
 			<h2 style="font-size: var(--font-size-3xl); margin: 0 0 var(--space-3) 0; font-weight: 900;">Plumas Disc Golf</h2>
@@ -33,6 +33,7 @@
 			</Stack>
 		</Container>
 	</Hero>
+	<!-- Membership Pitch -->
 	<Surface tone="muted">
 		<Stack align="center" gap={0}>
 			<h2>What Plumas Disc Golf Offers</h2>
@@ -69,42 +70,44 @@
 			</Card>
 		</Stack>
 	</Surface>
-	<Container maxWidth="l">
-	<Card layout="horizontal" title="Why Become a Member?">
-		{#snippet media()}
-			<Ticket size="200" color="var(--color-accent)" strokeWidth={1.1}></Ticket>
-		{/snippet}
-		<ul style="list-style-type: none;">
-			<li><CircleCheck size={14} color="var(--color-primary)"></CircleCheck> A Custom PDG Bag Tag</li>
-			<li><CircleCheck size={14} color="var(--color-primary)"></CircleCheck> Entry into all Bag Tag Leage events for the year</li>
-			<li><CircleCheck size={14} color="var(--color-primary)"></CircleCheck> Discounted entru into all other club events for the season</li>
-			<li><CircleCheck size={14} color="var(--color-primary)"></CircleCheck> A Youth Membership option for players under 18</li>
-		</ul>
-		{#snippet footer()}
-			<p style="font-weight: bold;">Ready to make it official?</p>
-			<Button href="/membership" variant="primary">Become a Member</Button>
-		{/snippet}
-	</Card>
-</Container>
-	<div style="padding-bottom: 32px"></div>
-	<Surface tone="muted">
-		<Stack align="center">
-			<h2>Our Courses</h2>
-		</Stack>
-		<Stack direction="row" gap={4} equal>
-			<Card title="Pioneer DGC" image={pioneerImg} imageAlt="View from hole 1's tee">
-				<Stack direction="row" equal>
-					<p>9 Holes • Par 28</p>
 
-					<Button href="/courses/390f1cfs6hb80b0" variant="accent">Course Info</Button>
-				</Stack>
-			</Card>
-			<Card title="Cascades DGC" image={cascadesImg} imageAlt="View from hole 1's tee">
-				<Stack direction="row" equal>
-					<p>18 Holes • Par 57</p>
-					<Button href="/courses/0hwk22l0al0sr9m" variant="accent">Course Info</Button>
-				</Stack>
-			</Card>
-		</Stack>
-	</Surface>
+	<Container maxWidth="lg">
+		<Card layout="horizontal" title="Why Become a Member?">
+			{#snippet media()}
+				<Ticket size="200" color="var(--color-accent)" strokeWidth={1.1}></Ticket>
+			{/snippet}
+			<ul style="list-style-type: none;">
+				<li><CircleCheck size={14} color="var(--color-primary)"></CircleCheck> A Custom PDG Bag Tag</li>
+				<li><CircleCheck size={14} color="var(--color-primary)"></CircleCheck> Entry into all Bag Tag Leage events for the year</li>
+				<li><CircleCheck size={14} color="var(--color-primary)"></CircleCheck> Discounted entru into all other club events for the season</li>
+				<li><CircleCheck size={14} color="var(--color-primary)"></CircleCheck> A Youth Membership option for players under 18</li>
+			</ul>
+			{#snippet footer()}
+				<p style="font-weight: bold;">Ready to make it official?</p>
+				<Button href="/membership" variant="primary">Become a Member</Button>
+			{/snippet}
+		</Card>
+	</Container>
+		<div style="padding-bottom: 32px"></div>
+
+		<Surface tone="muted">
+			<Stack align="center">
+				<h2>Our Courses</h2>
+			</Stack>
+			<Stack direction="row" gap={4} equal>
+				<Card title="Pioneer DGC" image={pioneerImg} imageAlt="View from hole 1's tee">
+					<Stack direction="row" equal>
+						<p>9 Holes • Par 28</p>
+
+						<Button href="/courses/390f1cfs6hb80b0" variant="accent">Course Info</Button>
+					</Stack>
+				</Card>
+				<Card title="Cascades DGC" image={cascadesImg} imageAlt="View from hole 1's tee">
+					<Stack direction="row" equal>
+						<p>18 Holes • Par 57</p>
+						<Button href="/courses/0hwk22l0al0sr9m" variant="accent">Course Info</Button>
+					</Stack>
+				</Card>
+			</Stack>
+		</Surface>
 </Container>
